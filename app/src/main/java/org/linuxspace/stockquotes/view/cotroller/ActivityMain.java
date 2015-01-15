@@ -1,9 +1,14 @@
-package org.linuxspace.stockquotes;
+package org.linuxspace.stockquotes.view.cotroller;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import org.linuxspace.stockquotes.R;
+import org.linuxspace.stockquotes.controller.QuotesGetter;
+import org.linuxspace.stockquotes.model.interfaces.IQuotesGetterCallback;
 
 
 public class ActivityMain extends ActionBarActivity {
@@ -12,6 +17,14 @@ public class ActivityMain extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final TextView tv = (TextView) findViewById(R.id.tvTest);
+        IQuotesGetterCallback callback = new IQuotesGetterCallback() {
+            @Override
+            public void onQuotesReceived(String result) {
+                tv.setText(result);
+            }
+        };
+        new QuotesGetter(callback, "AAPL").execute();
     }
 
 
