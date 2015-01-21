@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tvStockSymbol"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="@dimen/font_size_stock_symbol"
+        android:text="APPL" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:id="@+id/tvStockName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font_size_stock_name"
+            android:text="Apple Inc." />
+
+        <TextView
+            android:id="@+id/tvExchDisp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvStockName"
+            android:layout_marginTop="3dp"
+            android:textSize="@dimen/font_size_exch_disp"
+            android:text="NasdaqGS" />
+
+        <TextView
+            android:id="@+id/tvStockUpdateDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvExchDisp"
+            android:layout_marginTop="3dp"
+            android:textSize="@dimen/font_size_stock_date"
+            android:text="Jan 7,7:59PM EST" />
+
+
+        <TextView
+            android:id="@+id/tvStockPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/font_size_stock_price"
+            android:text="115.08" />
+
+        <TextView
+            android:id="@+id/tvStockPriceChange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvStockPrice"
+            android:layout_marginTop="5dp"
+            android:textSize="@dimen/font_size_stock_change"
+            android:text="0.12(0.24%)" />
+    </RelativeLayout>
+
+</LinearLayout>
