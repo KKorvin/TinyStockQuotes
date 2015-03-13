@@ -4,29 +4,40 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import org.linuxspace.stockquotes.R;
 import org.linuxspace.stockquotes.controller.QuotesGetter;
+import org.linuxspace.stockquotes.model.FinanceItem;
 import org.linuxspace.stockquotes.model.interfaces.IQuotesGetterCallback;
+
+import java.util.ArrayList;
 
 
 public class ActivityMain extends ActionBarActivity {
+
+    private ListView lvMainListview;
+    private FinanceItemsAdapter financeItemsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final TextView tv = (TextView) findViewById(R.id.tvTest);
-        IQuotesGetterCallback callback = new IQuotesGetterCallback() {
-            @Override
-            public void onQuotesReceived(String result) {
-                tv.setText(result);
-            }
-        };
-        new QuotesGetter(callback, "AAPL").execute();
+        this.populateMainListview();
     }
 
+    private void populateMainListview(){
+        lvMainListview = (ListView) findViewById(R.id.lvFinnceItemsList);
+        IQuotesGetterCallback callback = new IQuotesGetterCallback() {
+            @Override
+            public void onQuotesReceived(ArrayList<FinanceItem> financeItems) {
+                financeItemsAdapter = new FinanceItemsAdapter(ActivityMain.this, financeItems);
+                lvMainListview.setAdapter(financeItemsAdapter);
+            }
+        };
+        String stocks[] = {"AAPL", "GOOG", "YHOO"};
+        new QuotesGetter(callback, stocks).execute();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

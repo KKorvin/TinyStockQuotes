@@ -5,8 +5,8 @@ package org.linuxspace.stockquotes.model;
  */
 public abstract class FinanceItem {
     public String lastUpdate;
-    public String exchDisp;
-    public float price;
-    public float priceChangePercent;
-    public float priceChange;
+    public String stockExchange;
+    public String price;
+    public String priceChangePercent;
+    public String priceChangeNumber;
 }

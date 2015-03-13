@@ -1,8 +1,14 @@
 package org.linuxspace.stockquotes.controller;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.linuxspace.stockquotes.model.FinanceItem;
+import org.linuxspace.stockquotes.model.Stock;
 import org.linuxspace.stockquotes.model.interfaces.IQuotesGetterCallback;
+import org.linuxspace.stockquotes.utils.Constants;
 import org.linuxspace.stockquotes.utils.YahooApiUtils;
+
+import java.util.ArrayList;
 
 /**
  * Created by Alon on 15.01.2015.
@@ -10,13 +16,14 @@ import org.linuxspace.stockquotes.utils.YahooApiUtils;
 public class QuotesGetter extends BasicAsyncTask {
 
     private IQuotesGetterCallback callback;
-    private String stocksSymbols;
-    private String result;
+    private String[] stocksSymbols;
+    private ArrayList<FinanceItem> financeItems;
 
-    public QuotesGetter(IQuotesGetterCallback callback, String stocksSymbols) {
+    public QuotesGetter(IQuotesGetterCallback callback, String[] stocksSymbols) {
         this.callback = callback;
         this.stocksSymbols = stocksSymbols;
         this.wasError = false;
+        this.financeItems = new ArrayList<FinanceItem>();
     }
 
     @Override
@@ -24,8 +31,16 @@ public class QuotesGetter extends BasicAsyncTask {
         try {
             String query = buildQuotesGetQuery();
             String url = YahooApiUtils.createUrlFromQury(query);
-            JSONObject jsonQuotes = getJsonWithUrl(url);
-            result = jsonQuotes.toString();
+            JSONObject jsonQuery = getJsonWithUrl(url).getJSONObject(Constants.J_QUERY);
+            JSONObject jsonResult = jsonQuery.getJSONObject(Constants.J_RESULTS);
+            JSONObject jsonQuote = jsonResult.optJSONObject(Constants.J_QUOTE);
+            JSONArray jsonQuotes = new JSONArray();
+            if (jsonQuote == null) {
+                jsonQuotes = jsonResult.getJSONArray(Constants.J_QUOTE);
+            } else {
+                jsonQuotes.put(jsonQuote);
+            }
+            financeItems.addAll(Stock.fromJson(jsonQuotes));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -34,12 +49,19 @@ public class QuotesGetter extends BasicAsyncTask {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        callback.onQuotesReceived(result);
+        callback.onQuotesReceived(financeItems);
         super.onPostExecute(aVoid);
     }
 
     private String buildQuotesGetQuery() {
-        String query = "select * from yahoo.finance.quoteslist where symbol in ('" + stocksSymbols + "')";
+        String query = "select * from yahoo.finance.quotes where symbol in (";
+        for (int i = 0; i < stocksSymbols.length; i++) {
+            query += "'" + stocksSymbols[i] + "'";
+            if (i != stocksSymbols.length - 1) {
+                query += ",";
+            }
+        }
+        query += ")";
         return query;
     }
 }

@@ -2,18 +2,15 @@ package org.linuxspace.stockquotes.controller;
 
 import android.os.AsyncTask;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.linuxspace.stockquotes.utils.Constants;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by Alon on 15.01.2015.
@@ -22,28 +19,29 @@ public abstract class BasicAsyncTask extends AsyncTask<Void, Void, Void> {
 
     protected boolean wasError;
 
+    /**
+     * Gets json response from remote server by url
+     */
     protected JSONObject getJsonWithUrl(String url) throws IOException, JSONException {
 
-        // HttpClient is more then less deprecated. Need to change to URLConnection
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(url);
-        HttpResponse httpResponse = httpClient.execute(httpPost);
-        HttpEntity httpEntity = httpResponse.getEntity();
-
-        // Read content & Log
-        InputStream inputStream = httpEntity.getContent();
-
-
-        BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"), 8);
-        StringBuilder sBuilder = new StringBuilder();
-
-        String line = null;
-        while ((line = bReader.readLine()) != null) {
-            sBuilder.append(line + "\n");
+        URL link = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) link.openConnection();
+        connection.setReadTimeout(Constants.INPUT_STREAM_READ_TIME_OUT);
+        connection.setConnectTimeout(Constants.URL_CONNECTION_TIME_OUT);
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-length", "0");
+        connection.setUseCaches(false);
+        connection.setAllowUserInteraction(false);
+        connection.connect();
+        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line + "\n");
         }
-
-        inputStream.close();
-        String result = sBuilder.toString();
+        br.close();
+        connection.disconnect();
+        String result = sb.toString();
         JSONObject jsonObject = new JSONObject(result);
         return jsonObject;
     }
