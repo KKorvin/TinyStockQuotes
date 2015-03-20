@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+
+    <TextView
+        android:id="@+id/tvStockSymbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:gravity="center"
+        android:textSize="@dimen/font_size_stock_symbol"
+        android:text="APPL" />
+
+    <TextView
+        android:id="@+id/tvStockPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:textSize="@dimen/font_size_stock_price"
+        android:layout_below="@+id/tvStockSymbol"
+        android:text="115.08" />
+
+    <TextView
+        android:layout_alignParentRight="true"
+        android:id="@+id/tvExchDisp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:textSize="@dimen/font_size_exch_disp"
+        android:text="NasdaqGS" />
+
+
+    <TextView
+        android:id="@+id/tvStockPriceChange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvExchDisp"
+        android:layout_marginTop="5dp"
+        android:textSize="@dimen/font_size_stock_change"
+        android:text="0.12(0.24%)" />
+</RelativeLayout>
+
