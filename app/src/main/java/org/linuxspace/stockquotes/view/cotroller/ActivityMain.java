@@ -29,13 +29,14 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
     private SearchAutoCompleterAdapter searchAutoCompleterAdapter;
     private SearchView mSearchView;
     private SlidingMenu slidingMenu;
-
+    private MenuItem editMenuItem;
+    private Toolbar mActionBarToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mActionBarToolbar);
         this.slidingMenu = new SlidingMenu(this);
         this.populateMainListview();
@@ -60,6 +61,7 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
+        editMenuItem = menu.findItem(R.id.action_edit);
         mSearchView = (SearchView) searchItem.getActionView();
         mSearchView.setOnQueryTextListener(this);
         MenuItemCompat.setOnActionExpandListener(searchItem, this);
@@ -85,12 +87,15 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
         lvMainListview.setAdapter(searchAutoCompleterAdapter);
+        editMenuItem.setVisible(false);
         return true;
     }
 
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
         lvMainListview.setAdapter(financeItemsAdapter);
+        editMenuItem.setVisible(true);
+        mActionBarToolbar.setBackgroundColor(getResources().getColor(R.color.toolbar_orange));
         return true;
     }
 

@@ -5,5 +5,6 @@
     android:layout_width="match_parent"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     android:layout_height="?android:actionBarSize"
-    android:background="@color/background_material_dark" />
+    android:background="@color/toolbar_orange"
+    />
 

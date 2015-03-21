@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="toolbar_orange">#FF9B00</color>
+    <color name="status_bar_orange">#F67C01</color>
+    <color name="sliding_menu_color">#2C2C2C</color>
+
+
+</resources>
