@@ -43,4 +43,8 @@ public class Stock extends FinanceItem {
         }
         return stocks;
     }
+
+    public String getBigLetter() {
+        return this.name.substring(0, 1).toUpperCase();
+    }
 }

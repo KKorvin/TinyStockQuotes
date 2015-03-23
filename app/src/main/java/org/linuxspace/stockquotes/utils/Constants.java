@@ -15,6 +15,11 @@ public class Constants {
 
     // Files path
     public static final String FILE_ALL_NASDAQ_QUOTES = "nasdaqQuotes.json";
+    public static final String PREFERENCES_FILE = "config.ini";
+
+    // Shared preferances
+    public static final String PREF_STOCKS_LIST = "stocksList";
+
 
     //JSON Constants
     public static final String J_QUERY = "query";
@@ -31,6 +36,7 @@ public class Constants {
     public static final String J_NAME = "Name";
     public static final String J_AUTOCOMLETE_SYMBOL = "symbol";
     public static final String J_AUTOCOMLETE_NAME = "name";
+
     //Strings
     public static final String UNKNOWN = "N/A";
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,18 +8,27 @@
     <TextView
         android:id="@+id/tvStockSymbol"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
         android:textSize="@dimen/font_size_stock_symbol"
         android:text="Apple" />
 
     <TextView
         android:id="@+id/tvStockName"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="@dimen/font_size_stock_symbol"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvStockSymbol"
+        android:textSize="@dimen/font_size_stock_name"
         android:text="APPL" />
 
+    <ImageView
+        android:id="@+id/imgAddFavorite"
+        android:src="@android:drawable/star_off"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content" />
 
-</LinearLayout>
+</RelativeLayout>

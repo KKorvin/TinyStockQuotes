@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -14,6 +15,7 @@ import org.linuxspace.stockquotes.R;
 import org.linuxspace.stockquotes.model.SearchAutocompleteItem;
 import org.linuxspace.stockquotes.utils.Constants;
 import org.linuxspace.stockquotes.utils.GlobalUtils;
+import org.linuxspace.stockquotes.utils.PreferencesManager;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,7 @@ public class SearchAutoCompleterAdapter extends BaseAdapter
     private class ViewHolder {
         TextView tvStockName;
         TextView getTvStockSymbol;
+        ImageView imgFavorite;
     }
 
     private ArrayList<SearchAutocompleteItem> autocompleteItems;
@@ -119,13 +122,18 @@ public class SearchAutoCompleterAdapter extends BaseAdapter
             convertView = inflater.inflate(R.layout.lv_search_item, parent, false);
             viewHolder.getTvStockSymbol = (TextView) convertView.findViewById(R.id.tvStockSymbol);
             viewHolder.tvStockName = (TextView) convertView.findViewById(R.id.tvStockName);
+            viewHolder.imgFavorite = (ImageView) convertView.findViewById(R.id.imgAddFavorite);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.tvStockName.setText(searchAutocompleteItem.name);
         viewHolder.getTvStockSymbol.setText(searchAutocompleteItem.symbol);
-
+        if (PreferencesManager.getInstance().stocksSetContains(context, searchAutocompleteItem.symbol)) {
+            viewHolder.imgFavorite.setImageResource(android.R.drawable.star_big_on);
+        } else {
+            viewHolder.imgFavorite.setImageResource(android.R.drawable.star_big_off);
+        }
         return convertView;
     }
 

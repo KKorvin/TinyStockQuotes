@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.linuxspace.stockquotes" >
+    package="org.linuxspace.stockquotes">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -8,10 +8,12 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:name="org.linuxspace.stockquotes.ExtendedApplication"
+        android:theme="@style/AppTheme">
+
         <activity
             android:name=".view.cotroller.ActivityMain"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,8 +22,7 @@
         </activity>
         <activity
             android:name=".view.cotroller.ActivityDetails"
-            android:label="@string/title_activity_activity_details" >
-        </activity>
+            android:label="@string/title_activity_activity_details"></activity>
     </application>
 
 </manifest>

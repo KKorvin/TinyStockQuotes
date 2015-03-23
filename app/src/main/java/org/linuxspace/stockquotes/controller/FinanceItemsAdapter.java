@@ -23,10 +23,17 @@ public class FinanceItemsAdapter extends ArrayAdapter<FinanceItem> {
         TextView tvName;
         TextView tvSymbol;
         TextView tvPrice;
+        TextView tvPriceChange;
+        TextView tvStockLetter;
+        View viewPriceIndicator;
+
     }
+
+    private Context context;
 
     public FinanceItemsAdapter(Context context, ArrayList<FinanceItem> financeItems) {
         super(context, R.layout.lv_main_item, financeItems);
+        this.context = context;
     }
 
     @Override
@@ -40,14 +47,24 @@ public class FinanceItemsAdapter extends ArrayAdapter<FinanceItem> {
             //viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvStockName);
             viewHolder.tvSymbol = (TextView) convertView.findViewById(R.id.tvStockSymbol);
             viewHolder.tvPrice = (TextView) convertView.findViewById(R.id.tvStockPrice);
+            viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvStockName);
+            viewHolder.tvPriceChange = (TextView) convertView.findViewById(R.id.tvStockPriceChange);
+            viewHolder.tvStockLetter = (TextView) convertView.findViewById(R.id.tvStockLetter);
+            viewHolder.viewPriceIndicator = convertView.findViewById(R.id.viewPriceIndicator);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         if (financeItem instanceof Stock) {
-            //viewHolder.tvName.setText(((Stock) financeItem).name);
+            viewHolder.tvName.setText(((Stock) financeItem).name);
             viewHolder.tvSymbol.setText(((Stock) financeItem).symbol);
             viewHolder.tvPrice.setText(((Stock) financeItem).price);
+            viewHolder.tvPriceChange.setText(financeItem.getFormatedPriceChange());
+            viewHolder.tvPriceChange.setTextColor(financeItem.getPriceColor(context));
+            viewHolder.tvStockLetter.setText(((Stock) financeItem).getBigLetter());
+            viewHolder.tvStockLetter.setTextColor(financeItem.getPriceColor(context));
+            viewHolder.viewPriceIndicator.setBackgroundColor(financeItem.getPriceColor(context));
+
         }
         return convertView;
     }

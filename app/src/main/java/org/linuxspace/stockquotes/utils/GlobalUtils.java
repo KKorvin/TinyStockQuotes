@@ -17,6 +17,7 @@ import java.net.URL;
  */
 public class GlobalUtils {
 
+
     /**
      * Gets json response from remote server by url
      */

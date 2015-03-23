@@ -1,47 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
-
-
-    <TextView
-        android:id="@+id/tvStockSymbol"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:gravity="center"
-        android:textSize="@dimen/font_size_stock_symbol"
-        android:text="APPL" />
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:weightSum="100"
+    android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/tvStockPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:textSize="@dimen/font_size_stock_price"
-        android:layout_below="@+id/tvStockSymbol"
-        android:text="115.08" />
+        android:layout_weight="20"
+        android:id="@+id/tvStockLetter"
+        android:gravity="center_horizontal|center_vertical"
+        android:background="@color/white"
+        android:layout_width="0dp"
+        android:textSize="@dimen/font_size_stock_big_letter"
+        android:text="A"
+        android:layout_height="match_parent" />
 
-    <TextView
-        android:layout_alignParentRight="true"
-        android:id="@+id/tvExchDisp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:textSize="@dimen/font_size_exch_disp"
-        android:text="NasdaqGS" />
+    <RelativeLayout
+        android:layout_marginLeft="3dp"
+        android:background="@color/white"
+        android:layout_width="0dp"
+        android:layout_weight="80"
+        android:layout_height="wrap_content">
 
 
-    <TextView
-        android:id="@+id/tvStockPriceChange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/tvExchDisp"
-        android:layout_marginTop="5dp"
-        android:textSize="@dimen/font_size_stock_change"
-        android:text="0.12(0.24%)" />
-</RelativeLayout>
+        <TextView
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:id="@+id/tvStockSymbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:textSize="@dimen/font_size_stock_symbol"
+            android:textColor="@color/symbol_black"
+            android:text="APPL" />
+
+        <TextView
+            android:paddingLeft="10dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/tvStockName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/tvStockPriceChange"
+            android:layout_below="@+id/tvStockSymbol"
+            android:gravity="left"
+            android:maxLines="1"
+            android:textColor="@color/company_name_gray"
+            android:textSize="@dimen/font_size_stock_name"
+            android:text="Apple" />
+
+        <TextView
+            android:paddingTop="13dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/symbol_black"
+            android:id="@+id/tvStockPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/font_size_stock_price"
+            android:text="115.08" />
+
+
+        <TextView
+            android:paddingRight="10dp"
+            android:paddingTop="3dp"
+            android:id="@+id/tvStockPriceChange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/tvStockPrice"
+            android:textSize="@dimen/font_size_stock_change"
+            android:text="0.12(0.24%)" />
+
+        <View
+            android:id="@+id/viewPriceIndicator"
+            android:background="@color/price_green"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/tvStockName"
+            android:layout_height="2dp"></View>
+    </RelativeLayout>
+</LinearLayout>
 
