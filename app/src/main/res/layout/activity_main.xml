@@ -10,24 +10,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/toolbar" />
+            <include
+                layout="@layout/toolbar" />
 
-            <ListView
-                android:paddingTop="5dp"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="3dp"
-                android:background="@color/main_background_gray"
+            <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/srQuotesRefresher"
+                android:layout_below="@+id/toolbar_actionbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/lvFinanceItemsList"></ListView>
-        </LinearLayout>
+                android:layout_height="match_parent">
+
+                <com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
+                    android:paddingTop="5dp"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="3dp"
+                    android:background="@color/main_background_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/lvFinanceItemsList"></com.nhaarman.listviewanimations.itemmanipulation.DynamicListView>
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+            <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+                android:layout_centerInParent="true"
+                android:id="@+id/pbLoadingQuotes"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:visibility="gone"
+                android:background="@color/toolbar_orange" />
+        </RelativeLayout>
 
     </FrameLayout>
+
 
     <ListView
         android:stackFromBottom="true"

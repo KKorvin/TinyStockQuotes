@@ -10,6 +10,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nhaarman.listviewanimations.util.Swappable;
+
 import org.json.JSONArray;
 import org.linuxspace.stockquotes.R;
 import org.linuxspace.stockquotes.model.SearchAutocompleteItem;
@@ -23,7 +25,8 @@ import java.util.ArrayList;
  * Created by Alon on 14.03.2015.
  */
 public class SearchAutoCompleterAdapter extends BaseAdapter
-        implements Filterable {
+        implements Filterable, Swappable {
+
 
     private class ViewHolder {
         TextView tvStockName;
@@ -109,7 +112,7 @@ public class SearchAutoCompleterAdapter extends BaseAdapter
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return getItem(position).hashCode();
     }
 
     @Override
@@ -130,11 +133,21 @@ public class SearchAutoCompleterAdapter extends BaseAdapter
         viewHolder.tvStockName.setText(searchAutocompleteItem.name);
         viewHolder.getTvStockSymbol.setText(searchAutocompleteItem.symbol);
         if (PreferencesManager.getInstance().stocksSetContains(context, searchAutocompleteItem.symbol)) {
-            viewHolder.imgFavorite.setImageResource(android.R.drawable.star_big_on);
+            viewHolder.imgFavorite.setImageResource(R.drawable.img_checkmark_orange);
         } else {
-            viewHolder.imgFavorite.setImageResource(android.R.drawable.star_big_off);
+            viewHolder.imgFavorite.setImageResource(R.drawable.img_checkmark);
         }
         return convertView;
     }
 
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
+    @Override
+    public void swapItems(int i, int i2) {
+
+    }
 }

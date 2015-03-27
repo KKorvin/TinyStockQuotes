@@ -30,6 +30,7 @@ public class Stock extends FinanceItem {
         this.priceChangePercent = jsonQuote.has(Constants.J_CHANGE_PERCENT) ? jsonQuote.getString(Constants.J_CHANGE_PERCENT) : "";
         this.stockExchange = jsonQuote.has(Constants.J_STOCK_EXCHANGE) ? jsonQuote.getString(Constants.J_STOCK_EXCHANGE) : "";
         this.volume = jsonQuote.has(Constants.J_VOLUME) ? jsonQuote.getString(Constants.J_VOLUME) : "";
+
     }
 
     /**

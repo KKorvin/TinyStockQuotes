@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:paddingTop="10dp"
@@ -7,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imgIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@android:drawable/ic_menu_manage"
         android:layout_centerVertical="true"
         android:layout_marginRight="20dp"
@@ -16,12 +18,13 @@
         android:layout_marginTop="5dp" />
 
     <TextView
+        fontPath="fonts/Roboto-Regular.ttf"
         android:id="@+id/tvtiltle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:gravity="center_vertical"
-        android:textColor="@color/abc_primary_text_disable_only_material_dark"
+        android:textColor="@color/sliding_menu_text_color"
         android:text="Line 1"
         android:textStyle="bold"
         android:layout_centerVertical="true"

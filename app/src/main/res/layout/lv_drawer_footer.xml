@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:background="@color/sliding_menu_color">
+
+    <View
+        android:id="@+id/viewExitDevider"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:background="@color/sliding_menu_text_color"
+        android:layout_height="1dp"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_below="@+id/viewExitDevider"
+            android:id="@+id/imgExitIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/icon_exit" />
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_below="@+id/viewExitDevider"
+            android:id="@+id/tvtiltle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:textColor="@color/sliding_menu_text_color"
+            android:text="@string/exit"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</RelativeLayout>

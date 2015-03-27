@@ -3,12 +3,15 @@
     <color name="white">#FFFFFF</color>
     <color name="toolbar_orange">#FF9B00</color>
     <color name="status_bar_orange">#F67C01</color>
-    <color name="sliding_menu_color">#2C2C2C</color>
+    <color name="sliding_menu_color">#FAFAFA</color>
     <color name="symbol_black">#262626</color>
     <color name="company_name_gray">#696969</color>
     <color name="main_background_gray">#F4F4F4</color>
     <color name="price_green">#67C158</color>
     <color name="price_red">#F02C28</color>
-
+    <color name="refresh_progress_1">#FFC107</color>
+    <color name="refresh_progress_2">#FFA000</color>
+    <color name="refresh_progress_3">#FF9800</color>
+    <color name="sliding_menu_text_color">#8C8C8C</color>
 
 </resources>

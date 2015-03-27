@@ -1,34 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    tools:ignore="MissingPrefix"
+    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tvStockSymbol"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:textSize="@dimen/font_size_stock_symbol"
-        android:text="Apple" />
+    <RelativeLayout
+        android:layout_marginRight="3dp"
+        android:background="@color/white"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="78dp">
 
-    <TextView
-        android:id="@+id/tvStockName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvStockSymbol"
-        android:textSize="@dimen/font_size_stock_name"
-        android:text="APPL" />
 
-    <ImageView
-        android:id="@+id/imgAddFavorite"
-        android:src="@android:drawable/star_off"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:id="@+id/tvStockSymbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:textSize="@dimen/font_size_stock_symbol"
+            android:textColor="@color/symbol_black"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:text="APPL" />
 
-</RelativeLayout>
+        <TextView
+            android:paddingLeft="10dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/tvStockName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvStockSymbol"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:gravity="left"
+            android:maxLines="1"
+            android:textColor="@color/company_name_gray"
+            android:textSize="@dimen/font_size_stock_name"
+            android:text="Apple" />
+
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:id="@+id/viewPriceIndicator"
+            android:background="@color/toolbar_orange"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"></View>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="78dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_height="78dp">
+
+        <ImageView
+            android:id="@+id/imgAddFavorite"
+            android:gravity="center_horizontal|center_vertical"
+            android:background="@color/white"
+            android:src="@drawable/img_checkmark"
+            android:padding="0dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+    </LinearLayout>
+</LinearLayout>
+

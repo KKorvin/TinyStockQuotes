@@ -5,6 +5,10 @@ package org.linuxspace.stockquotes.utils;
  */
 public class Constants {
 
+    //Codes
+    public static final int MICROPHONE_REQUEST_CODE = 121;
+
+
     //Yahoo urls
     public static final String BASIC_YAHOO_API_URL = "http://query.yahooapis.com/v1/public/yql?";
     public static final String YAHOO_DB_URL = "store://datatables.org/alltableswithkeys";
@@ -39,5 +43,5 @@ public class Constants {
 
     //Strings
     public static final String UNKNOWN = "N/A";
-
+    public static final String TOOLBAR_REMOVEMODE_SPACES = "     ";
 }

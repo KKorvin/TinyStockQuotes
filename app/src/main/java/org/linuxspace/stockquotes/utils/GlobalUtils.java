@@ -81,4 +81,8 @@ public class GlobalUtils {
 
         return false;
     }
+
+    public static String buildGooglePlayLink(Context mContext) {
+        return "https://play.google.com/store/apps/details?id=" + mContext.getPackageName();
+    }
 }

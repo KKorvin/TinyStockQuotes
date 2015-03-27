@@ -22,4 +22,9 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'uk.co.chrisjenx:calligraphy:2.0.2'
+    compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
+    compile 'me.drakeet.materialdialog:library:1.2.2'
+    compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
+    compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'
 }

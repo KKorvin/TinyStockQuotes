@@ -5,10 +5,19 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="edit">Edit</string>
-    <string name="search_hint">Company name or symbol</string>
+    <string name="microphone">Microphone</string>
+    <string name="remove">Remove</string>
+    <string name="checked">Checked</string>
+    <string name="search_hint">Company name</string>
     <string name="seetings">Settings</string>
+    <string name="share">Share</string>
+    <string name="remove_add">Remove add</string>
     <string name="ratee_app">Rate app</string>
     <string name="add_price_alert">Add price alert</string>
     <string name="title_activity_activity_details">ActivityDetails</string>
+    <string name="sliding_menu">Sliding menu</string>
+    <string name="exit">Exit</string>
+    <string name="share_text">Stock Quotes - Watch your stocks in material design way!</string>
+    <string name="from">from</string>
 
 </resources>
