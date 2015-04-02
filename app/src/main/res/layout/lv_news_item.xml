@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    tools:ignore="MissingPrefix"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_marginRight="3dp"
+        android:background="@color/white"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="78dp">
+
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:id="@+id/imgNewsIcon"
+            android:src="@drawable/icon_news"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <TextView
+            android:layout_below="@+id/imgNewsIcon"
+            android:id="@+id/tvNewsDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/symbol_black"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:text="21.03.2014" />
+
+        <TextView
+            android:id="@+id/tvNewsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/font_size_stock_symbol"
+            android:textColor="@color/symbol_black"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:text="Some news text" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="78dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_height="78dp">
+
+        <ImageView
+            android:id="@+id/imgAddFavorite"
+            android:gravity="center_horizontal|center_vertical"
+            android:background="@color/white"
+            android:src="@drawable/img_checkmark"
+            android:padding="0dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+    </LinearLayout>
+</LinearLayout>
+

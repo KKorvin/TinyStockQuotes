@@ -78,10 +78,12 @@ public class ActivityDetails extends ActionBarActivity {
 
     private void setStockDetailsColumns() {
         lvLeftDetailsColumn = (ListView) findViewById(R.id.lvStockDetailsLeft);
+        lvLeftDetailsColumn.setEnabled(false);
         StockDetailsAdapter leftAdapter = new StockDetailsAdapter(this, StockDetailsItem.fromDefaulrLeftColumn(this, currentStock));
         lvLeftDetailsColumn.setAdapter(leftAdapter);
 
         lvRightDetailsColumn = (ListView) findViewById(R.id.lvStockDetailsRight);
+        lvRightDetailsColumn.setEnabled(false);
         StockDetailsAdapter rightAdapter = new StockDetailsAdapter(this, StockDetailsItem.fromDefaulrRightColumn(this, currentStock));
         lvRightDetailsColumn.setAdapter(rightAdapter);
     }
