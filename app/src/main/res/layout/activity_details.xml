@@ -1,12 +1,130 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="org.linuxspace.stockquotes.view.cotroller.ActivityDetails">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.linuxspace.stockquotes.view.cotroller.ActivityDetails"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix"
+    android:orientation="vertical">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <include layout="@layout/toolbar" />
 
+    <RelativeLayout
+        android:id="@+id/rlTopStockCard"
+        android:layout_below="@+id/toolbar_actionbar"
+        android:layout_margin="5dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="78dp">
+
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:id="@+id/tvStockSymbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:textSize="@dimen/font_size_stock_symbol"
+            android:textColor="@color/symbol_black"
+            android:text="APPL" />
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/tvStockName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/tvStockPriceChange"
+            android:layout_below="@+id/tvStockSymbol"
+            android:gravity="left"
+            android:maxLines="1"
+            android:textColor="@color/company_name_gray"
+            android:textSize="@dimen/font_size_stock_name"
+            android:text="Apple" />
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:paddingTop="13dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/symbol_black"
+            android:id="@+id/tvStockPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/font_size_stock_price"
+            android:text="115.08" />
+
+
+        <TextView
+            android:paddingRight="10dp"
+            android:paddingTop="3dp"
+            android:id="@+id/tvStockPriceChange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/tvStockPrice"
+            android:textSize="@dimen/font_size_stock_change"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:text="0.12(0.24%)" />
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:id="@+id/viewPriceIndicator"
+            android:background="@color/price_green"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"></View>
+    </RelativeLayout>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_below="@+id/rlTopStockCard"
+        android:layout_margin="5dp"
+        android:background="@color/white"
+        android:id="@+id/chartStock"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:layout_below="@+id/chartStock"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:background="@color/white"
+            android:id="@+id/lvStockDetailsLeft"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
+            android:divider="@android:color/transparent"
+            android:clickable="false"
+            android:orientation="vertical"></ListView>
+
+        <ListView
+            android:layout_below="@+id/chartStock"
+            android:layout_toRightOf="@id/lvStockDetailsLeft"
+            android:background="@color/white"
+            android:id="@+id/lvStockDetailsRight"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:clickable="false"
+            android:divider="@android:color/transparent"
+            android:orientation="vertical"></ListView>
+
+    </LinearLayout>
 </RelativeLayout>

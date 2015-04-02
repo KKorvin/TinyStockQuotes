@@ -19,5 +19,17 @@
     <string name="exit">Exit</string>
     <string name="share_text">Stock Quotes - Watch your stocks in material design way!</string>
     <string name="from">from</string>
+    <string name="drag_drop">   Drag &amp; Drop</string>
+    <string name="sort_ab">Sort alphabetically</string>
+    <string name="stock_details">Stock details</string>
+    <string name="week">Week</string>
+    <string name="volume">Volume</string>
+    <string name="open">Open</string>
+    <string name="hight">Hight</string>
+    <string name="low">Low</string>
+    <string name="prev_close">Prev Close</string>
+    <string name="eps">EPS</string>
+    <string name="exchange">Exchange</string>
+    <string name="last_trade">Last trade</string>
 
 </resources>

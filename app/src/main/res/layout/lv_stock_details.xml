@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        fontPath="fonts/Roboto-Regular.ttf"
+        android:id="@+id/tvtiltle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:textColor="@color/symbol_black"
+        android:text="Volume"
+        android:layout_alignParentLeft="true"
+        android:textStyle="bold" />
+
+    <TextView
+        fontPath="fonts/Roboto-Regular.ttf"
+        android:id="@+id/tvValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:textColor="@color/sliding_menu_text_color"
+        android:text="Line 1"
+        android:layout_alignParentRight="true" />
+
+
+</RelativeLayout>

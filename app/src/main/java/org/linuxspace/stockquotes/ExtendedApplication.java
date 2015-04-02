@@ -1,13 +1,11 @@
 package org.linuxspace.stockquotes;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
 
 import org.linuxspace.stockquotes.utils.Constants;
+import org.linuxspace.stockquotes.utils.PreferencesManager;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -24,15 +22,13 @@ public class ExtendedApplication extends Application {
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
-        SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES_FILE, Context.MODE_PRIVATE);
-        if (!prefs.contains(Constants.PREF_STOCKS_LIST)) {
-            Set<String> stocksSet = new HashSet<String>();
-            stocksSet.add("AAPL");
-            stocksSet.add("GOOG");
-            stocksSet.add("YHOO");
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putStringSet(Constants.PREF_STOCKS_LIST, stocksSet);
-            editor.commit();
+        PreferencesManager.getInstance().init(getApplicationContext());
+        if (!PreferencesManager.getInstance().contains(Constants.PREF_STOCKS_LIST)) {
+            ArrayList<String> stocksList = new ArrayList<String>();
+            stocksList.add("AAPL");
+            stocksList.add("GOOG");
+            stocksList.add("YHOO");
+            PreferencesManager.getInstance().saveStockList(stocksList);
         }
     }
 }

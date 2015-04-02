@@ -14,6 +14,12 @@ public class Stock extends FinanceItem {
     public String name;
     public String symbol;
     public String volume;
+    public String open;
+    public String hight;
+    public String low;
+    public String prevClose;
+    public String eps;
+    public String lastTrade;
 
     /**
      * Create Stock from json object
@@ -30,6 +36,13 @@ public class Stock extends FinanceItem {
         this.priceChangePercent = jsonQuote.has(Constants.J_CHANGE_PERCENT) ? jsonQuote.getString(Constants.J_CHANGE_PERCENT) : "";
         this.stockExchange = jsonQuote.has(Constants.J_STOCK_EXCHANGE) ? jsonQuote.getString(Constants.J_STOCK_EXCHANGE) : "";
         this.volume = jsonQuote.has(Constants.J_VOLUME) ? jsonQuote.getString(Constants.J_VOLUME) : "";
+        this.open = jsonQuote.has(Constants.J_OPEN) ? jsonQuote.getString(Constants.J_OPEN) : "";
+        this.prevClose = jsonQuote.has(Constants.J_PREV_CLOSE) ? jsonQuote.getString(Constants.J_PREV_CLOSE) : "";
+        this.hight = jsonQuote.has(Constants.J_HIGTH) ? jsonQuote.getString(Constants.J_HIGTH) : "";
+        this.low = jsonQuote.has(Constants.J_LOW) ? jsonQuote.getString(Constants.J_LOW) : "";
+        this.eps = jsonQuote.has(Constants.J_EPS) ? jsonQuote.getString(Constants.J_EPS) : "";
+        this.lastTrade = jsonQuote.has(Constants.J_LAST_TRADE_TIME) ? jsonQuote.getString(Constants.J_LAST_TRADE_TIME) : "";
+        this.stockExchange = jsonQuote.has(Constants.J_STOCK_EXCHANGE) ? jsonQuote.getString(Constants.J_STOCK_EXCHANGE) : "";
 
     }
 
@@ -48,4 +61,10 @@ public class Stock extends FinanceItem {
     public String getBigLetter() {
         return this.name.substring(0, 1).toUpperCase();
     }
+
+    @Override
+    public int compareTo(FinanceItem item) {
+        return this.symbol.compareTo(((Stock) item).symbol);
+    }
+
 }

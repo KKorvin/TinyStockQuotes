@@ -2,8 +2,8 @@ package org.linuxspace.stockquotes.view.cotroller;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.v4.view.MenuItemCompat;
@@ -15,8 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,21 +38,27 @@ import org.linuxspace.stockquotes.utils.PreferencesManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class ActivityMain extends ActionBarActivity implements SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener, AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemLongClickListener {
 
+    public static enum Mode {
+        NORMAL, REMOVE, SEARCH, SORT;
+    }
+
+    public static Mode mode;
+
     private Toolbar mActionBarToolbar;
+    private SearchView mSearchView;
+    private SlidingMenu slidingMenu;
+
     private MenuItem editMenuItem;
     private MenuItem microMenuItem;
     private MenuItem removeMenuItem;
     private MenuItem searchMenuItem;
-    private SearchView mSearchView;
-
-    private SlidingMenu slidingMenu;
+    private MenuItem sortAbMenuItem;
 
     private DynamicListView lvMainListview;
     private SwipeRefreshLayout srQuotesRefresher;
@@ -61,24 +68,14 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
     private SearchAutoCompleterAdapter searchAutoCompleterAdapter;
     private IQuotesGetterCallback gotQuotesCallback;
 
-    private boolean isEditMode;
-    private boolean isSearchMode;
     private HashSet<Integer> financeItemsToRemove;
-
-    View.OnTouchListener tlMainListview = new View.OnTouchListener() {
-        public boolean onTouch(View view, MotionEvent event) {
-            if (event.getAction() == android.view.MotionEvent.ACTION_UP && !isSearchMode && !isEditMode) {
-                srQuotesRefresher.setEnabled(true);
-            }
-            return false;
-        }
-    };
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mode = Mode.NORMAL;
         this.financeItemsToRemove = new HashSet<Integer>();
         srQuotesRefresher = (SwipeRefreshLayout) findViewById(R.id.srQuotesRefresher);
         srQuotesRefresher.setOnRefreshListener(this);
@@ -97,7 +94,6 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
             lvMainListview.enableDragAndDrop();
             lvMainListview.setOnItemClickListener(this);
             lvMainListview.setOnItemLongClickListener(this);
-            lvMainListview.setOnTouchListener(tlMainListview);
             if (!srQuotesRefresher.isRefreshing()) {
                 pbLoadingQuotes.setVisibility(View.VISIBLE);
             }
@@ -117,24 +113,99 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
                 }
             };
         }
-        SharedPreferences prefs = getSharedPreferences(Constants.PREFERENCES_FILE, Context.MODE_PRIVATE);
-        Set<String> stocksSet = prefs.getStringSet(Constants.PREF_STOCKS_LIST, new HashSet<String>());
-        new QuotesGetter(gotQuotesCallback, stocksSet.toArray(new String[stocksSet.size()])).execute();
+        ArrayList<String> stocksList = PreferencesManager.getInstance().getStockList();
+        new QuotesGetter(gotQuotesCallback, stocksList.toArray(new String[stocksList.size()])).execute();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         microMenuItem = menu.findItem(R.id.action_micro);
-        microMenuItem.setVisible(false);
         removeMenuItem = menu.findItem(R.id.action_remove);
-        removeMenuItem.setVisible(false);
         searchMenuItem = menu.findItem(R.id.action_search);
         editMenuItem = menu.findItem(R.id.action_edit);
+        sortAbMenuItem = menu.findItem(R.id.action_sort);
         mSearchView = (SearchView) searchMenuItem.getActionView();
         mSearchView.setOnQueryTextListener(this);
         MenuItemCompat.setOnActionExpandListener(searchMenuItem, this);
+        startMode(Mode.NORMAL);
         return true;
+    }
+
+    private void startMode(Mode modeToStart) {
+        //Save order before exit sort mode
+        if (mode == Mode.SORT) {
+            financeItemsAdapter.saveOrder();
+        }
+        mode = modeToStart;
+        if (modeToStart == Mode.NORMAL) {
+            removeMenuItem.setVisible(false);
+            microMenuItem.setVisible(false);
+            sortAbMenuItem.setVisible(false);
+            searchMenuItem.setVisible(true);
+            editMenuItem.setVisible(true);
+            mActionBarToolbar.setLogo(null);
+            mActionBarToolbar.setTitle(getString(R.string.app_name));
+            mActionBarToolbar.setBackgroundResource(R.color.toolbar_orange);
+            slidingMenu.mDrawerToggle.setDrawerIndicatorEnabled(true);
+            slidingMenu.mDrawerLayout.setEnabled(true);
+            slidingMenu.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            slidingMenu.mDrawerToggle.setHomeAsUpIndicator(null);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(getResources().getColor(R.color.status_bar_orange));
+            }
+            srQuotesRefresher.setEnabled(true);
+            if (financeItemsAdapter != null)
+                financeItemsAdapter.notifyDataSetChanged();
+            return;
+        } else if (modeToStart == Mode.SORT) {
+            removeMenuItem.setVisible(false);
+            searchMenuItem.setVisible(false);
+            editMenuItem.setVisible(false);
+            microMenuItem.setVisible(false);
+            sortAbMenuItem.setVisible(true);
+            mActionBarToolbar.setTitle(getString(R.string.drag_drop));
+            mActionBarToolbar.setBackgroundResource(R.color.price_green);
+            mActionBarToolbar.setLogo(null);
+            slidingMenu.mDrawerToggle.setHomeAsUpIndicator(getV7DrawerToggleDelegate().getThemeUpIndicator());
+            slidingMenu.mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startMode(Mode.NORMAL);
+                }
+            });
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(getResources().getColor(R.color.status_bar_green));
+            }
+        } else if (modeToStart == Mode.REMOVE) {
+            searchMenuItem.setVisible(false);
+            editMenuItem.setVisible(false);
+            microMenuItem.setVisible(false);
+            removeMenuItem.setVisible(true);
+            mActionBarToolbar.setLogo(R.drawable.icon_toolbar_checked);
+            mActionBarToolbar.setTitle(Constants.TOOLBAR_REMOVEMODE_SPACES + "0 " + getString(R.string.from) + " " + String.valueOf(financeItemsAdapter.getCount()));
+            mActionBarToolbar.setBackgroundResource(R.color.price_red);
+            financeItemsToRemove.clear();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(getResources().getColor(R.color.status_bar_red));
+            }
+        } else if (modeToStart == Mode.SEARCH) {
+            removeMenuItem.setVisible(false);
+            searchMenuItem.setVisible(false);
+            editMenuItem.setVisible(false);
+            microMenuItem.setVisible(true);
+        }
+
+        srQuotesRefresher.setEnabled(false);
+        slidingMenu.mDrawerToggle.setDrawerIndicatorEnabled(false);
+        slidingMenu.mDrawerLayout.setEnabled(false);
+        slidingMenu.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     @Override
@@ -146,32 +217,15 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
             intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.search_hint));
             startActivityForResult(intent, Constants.MICROPHONE_REQUEST_CODE);
         } else if (item.equals(editMenuItem)) {
-            removeMenuItem.setVisible(true);
-            searchMenuItem.setVisible(false);
-            editMenuItem.setVisible(false);
-            slidingMenu.mDrawerToggle.setDrawerIndicatorEnabled(false);
-            slidingMenu.mDrawerLayout.setEnabled(false);
-            slidingMenu.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            mActionBarToolbar.setLogo(R.drawable.icon_toolbar_checked);
-            mActionBarToolbar.setTitle(Constants.TOOLBAR_REMOVEMODE_SPACES + "0 " + getString(R.string.from) + " " + String.valueOf(financeItemsAdapter.getCount()));
-            financeItemsToRemove.clear();
-            isEditMode = true;
-            financeItemsAdapter.isEditMode = true;
-            srQuotesRefresher.setEnabled(false);
+            startMode(Mode.SORT);
         } else if (item.equals(removeMenuItem)) {
-            removeMenuItem.setVisible(false);
-            editMenuItem.setVisible(true);
-            searchMenuItem.setVisible(true);
-            slidingMenu.mDrawerToggle.setDrawerIndicatorEnabled(true);
-            slidingMenu.mDrawerLayout.setEnabled(true);
-            slidingMenu.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-            mActionBarToolbar.setLogo(null);
-            mActionBarToolbar.setTitle(getString(R.string.app_name));
-            isEditMode = false;
-            financeItemsAdapter.isEditMode = false;
+            startMode(Mode.NORMAL);
             financeItemsAdapter.removeItems(financeItemsToRemove);
             financeItemsAdapter.notifyDataSetChanged();
-            srQuotesRefresher.setEnabled(true);
+        } else if (item.equals(sortAbMenuItem)) {
+            financeItemsAdapter.orderByAlphabet();
+            financeItemsAdapter.saveOrder();
+            financeItemsAdapter.notifyDataSetChanged();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -189,25 +243,17 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
 
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
+        startMode(Mode.SEARCH);
         lvMainListview.setAdapter(searchAutoCompleterAdapter);
-        editMenuItem.setVisible(false);
-        microMenuItem.setVisible(true);
         slidingMenu.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        isSearchMode = true;
-        srQuotesRefresher.setEnabled(false);
         return true;
     }
 
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
+        startMode(Mode.NORMAL);
         lvMainListview.setAdapter(financeItemsAdapter);
-        editMenuItem.setVisible(true);
-        slidingMenu.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        microMenuItem.setVisible(false);
-        mActionBarToolbar.setBackgroundColor(getResources().getColor(R.color.toolbar_orange));
         populateMainListview();
-        isSearchMode = false;
-        srQuotesRefresher.setEnabled(false);
         return true;
     }
 
@@ -252,30 +298,35 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
         if (((ListView) listView).getAdapter() instanceof SearchAutoCompleterAdapter) {
             String clickedStockSymbol = searchAutoCompleterAdapter.getItem(position).symbol;
             ImageView imgAddFavorite = (ImageView) view.findViewById(R.id.imgAddFavorite);
-            if (PreferencesManager.getInstance().stocksSetContains(this, clickedStockSymbol)) {
-                PreferencesManager.getInstance().removeStockSymbolFromPrefs(this, clickedStockSymbol);
+            if (PreferencesManager.getInstance().stocksSetContains(clickedStockSymbol)) {
+                PreferencesManager.getInstance().removeStockSymbolFromPrefs(clickedStockSymbol);
                 imgAddFavorite.setImageResource(R.drawable.img_checkmark);
             } else {
-                PreferencesManager.getInstance().addStockSymbolToPrefs(this, clickedStockSymbol);
+                PreferencesManager.getInstance().addStockSymbolToPrefs(clickedStockSymbol);
                 imgAddFavorite.setImageResource(R.drawable.img_checkmark_orange);
             }
         } else {
-            if (isEditMode) {
-                TextView tvStockLetter = (TextView) view.findViewById(R.id.tvStockLetter);
-                LinearLayout llRemoveCheckMark = (LinearLayout) view.findViewById(R.id.llRemoveCheckMark);
-                llRemoveCheckMark.setVisibility(llRemoveCheckMark.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-                tvStockLetter.setVisibility(tvStockLetter.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-                if (llRemoveCheckMark.getVisibility() == View.VISIBLE) {
-                    financeItemsToRemove.add(position);
-                } else {
-                    financeItemsToRemove.remove(position);
-                }
-                mActionBarToolbar.setTitle(Constants.TOOLBAR_REMOVEMODE_SPACES + String.valueOf(financeItemsToRemove.size()) + " " + getString(R.string.from) + " " + String.valueOf(financeItemsAdapter.getCount()));
+            if (mode == Mode.REMOVE) {
+                markAsRemove(view, position);
             } else {
                 Intent startIntent = new Intent(this, ActivityDetails.class);
+                startIntent.putExtra(Constants.INTENT_EXTRA_STOCK, financeItemsAdapter.getItem(position));
                 startActivity(startIntent);
             }
         }
+    }
+
+    private void markAsRemove(View view, int position) {
+        TextView tvStockLetter = (TextView) view.findViewById(R.id.tvStockLetter);
+        LinearLayout llRemoveCheckMark = (LinearLayout) view.findViewById(R.id.llRemoveCheckMark);
+        llRemoveCheckMark.setVisibility(llRemoveCheckMark.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+        tvStockLetter.setVisibility(tvStockLetter.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+        if (llRemoveCheckMark.getVisibility() == View.VISIBLE) {
+            financeItemsToRemove.add(position);
+        } else {
+            financeItemsToRemove.remove(position);
+        }
+        mActionBarToolbar.setTitle(Constants.TOOLBAR_REMOVEMODE_SPACES + String.valueOf(financeItemsToRemove.size()) + " " + getString(R.string.from) + " " + String.valueOf(financeItemsAdapter.getCount()));
     }
 
     @Override
@@ -297,18 +348,24 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
 
     @Override
     public void onBackPressed() {
-        if (isEditMode) {
-            onOptionsItemSelected(removeMenuItem);
-        } else if (isSearchMode) {
+        if (mode == Mode.SEARCH) {
             searchMenuItem.collapseActionView();
+        } else if (mode != Mode.NORMAL) {
+            startMode(Mode.NORMAL);
+        } else {
+            finish();
         }
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        if (!isEditMode && !isSearchMode) {
-            srQuotesRefresher.setEnabled(false);
+        if (mode == Mode.NORMAL) {
+            startMode(Mode.REMOVE);
+            markAsRemove(view, position);
+        } else if (mode == Mode.SORT) {
             lvMainListview.startDragging(position);
+        } else if (mode == Mode.REMOVE) {
+            markAsRemove(view, position);
         }
         return true;
     }

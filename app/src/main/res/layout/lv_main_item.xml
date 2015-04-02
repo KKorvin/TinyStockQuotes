@@ -21,14 +21,14 @@
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/llRemoveCheckMark"
-        android:background="@color/toolbar_orange"
+        android:background="@color/price_red"
         android:layout_width="78dp"
         android:gravity="center_horizontal|center_vertical"
         android:layout_height="78dp">
 
         <ImageView
             android:gravity="center_horizontal|center_vertical"
-            android:background="@color/toolbar_orange"
+            android:background="@color/price_red"
             android:src="@drawable/img_checkmark_white"
             android:padding="0dp"
             android:layout_width="40dp"

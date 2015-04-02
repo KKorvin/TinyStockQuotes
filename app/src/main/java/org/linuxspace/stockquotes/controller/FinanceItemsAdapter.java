@@ -14,6 +14,7 @@ import org.linuxspace.stockquotes.R;
 import org.linuxspace.stockquotes.model.FinanceItem;
 import org.linuxspace.stockquotes.model.Stock;
 import org.linuxspace.stockquotes.utils.PreferencesManager;
+import org.linuxspace.stockquotes.view.cotroller.ActivityMain;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +38,6 @@ public class FinanceItemsAdapter extends ArrayAdapter<FinanceItem> implements Sw
     }
 
     private Context context;
-    public boolean isEditMode;
     private ArrayList<FinanceItem> financeItems;
 
 
@@ -76,7 +76,7 @@ public class FinanceItemsAdapter extends ArrayAdapter<FinanceItem> implements Sw
             viewHolder.tvStockLetter.setText(((Stock) financeItem).getBigLetter());
             viewHolder.tvStockLetter.setTextColor(financeItem.getPriceColor(context));
             viewHolder.viewPriceIndicator.setBackgroundColor(financeItem.getPriceColor(context));
-            if (!isEditMode) {
+            if (ActivityMain.mode != ActivityMain.Mode.REMOVE) {
                 viewHolder.llRemoveCheckMark.setVisibility(View.GONE);
                 viewHolder.tvStockLetter.setVisibility(View.VISIBLE);
             }
@@ -97,7 +97,7 @@ public class FinanceItemsAdapter extends ArrayAdapter<FinanceItem> implements Sw
     public void removeItems(HashSet<Integer> financeItemsToRemove) {
         for (int position : financeItemsToRemove) {
             FinanceItem financeItem = getItem(position);
-            PreferencesManager.getInstance().removeStockSymbolFromPrefs(context, ((Stock) financeItem).symbol);
+            PreferencesManager.getInstance().removeStockSymbolFromPrefs(((Stock) financeItem).symbol);
             remove(financeItem);
         }
     }
@@ -106,5 +106,17 @@ public class FinanceItemsAdapter extends ArrayAdapter<FinanceItem> implements Sw
     public void swapItems(int i1, int i2) {
         Collections.swap(financeItems, i1, i2);
         notifyDataSetChanged();
+    }
+
+    public void saveOrder() {
+        ArrayList<String> stocksList = new ArrayList<String>();
+        for (FinanceItem item : financeItems) {
+            stocksList.add(((Stock) item).symbol);
+        }
+        PreferencesManager.getInstance().saveStockList(stocksList);
+    }
+
+    public void orderByAlphabet() {
+        Collections.sort(financeItems);
     }
 }

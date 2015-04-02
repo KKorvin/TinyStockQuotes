@@ -1,10 +1,8 @@
 package org.linuxspace.stockquotes.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 /**
  * Created by Alon on 23.03.2015.
@@ -12,6 +10,8 @@ import java.util.Set;
 public class PreferencesManager {
 
     private static PreferencesManager preferencesManager;
+    private TinyDB tinyDB;
+
 
     public static PreferencesManager getInstance() {
         if (preferencesManager == null) {
@@ -20,30 +20,36 @@ public class PreferencesManager {
         return preferencesManager;
     }
 
-    public void addStockSymbolToPrefs(Context mContext, String stockSymbol) {
-        SharedPreferences prefs = mContext.getSharedPreferences(Constants.PREFERENCES_FILE, Context.MODE_PRIVATE);
-        Set<String> stocksSet = prefs.getStringSet(Constants.PREF_STOCKS_LIST, new HashSet<String>());
-        stocksSet.add(stockSymbol);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.clear();
-        editor.putStringSet(Constants.PREF_STOCKS_LIST, stocksSet);
-        editor.commit();
+    public void init(Context appContext) {
+        tinyDB = new TinyDB(appContext);
     }
 
-    public void removeStockSymbolFromPrefs(Context mContext, String stockSymbol) {
-        SharedPreferences prefs = mContext.getSharedPreferences(Constants.PREFERENCES_FILE, Context.MODE_PRIVATE);
-        Set<String> stocksSet = prefs.getStringSet(Constants.PREF_STOCKS_LIST, new HashSet<String>());
-        stocksSet.remove(stockSymbol);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.clear();
-        editor.putStringSet(Constants.PREF_STOCKS_LIST, stocksSet);
-        editor.commit();
+    public void addStockSymbolToPrefs(String stockSymbol) {
+        ArrayList<String> stocksList = tinyDB.getList(Constants.PREF_STOCKS_LIST);
+        stocksList.add(stockSymbol);
+        tinyDB.putList(Constants.PREF_STOCKS_LIST, stocksList);
     }
 
-    public boolean stocksSetContains(Context mContext, String stockSymbol) {
-        SharedPreferences prefs = mContext.getSharedPreferences(Constants.PREFERENCES_FILE, Context.MODE_PRIVATE);
-        Set<String> stocksSet = prefs.getStringSet(Constants.PREF_STOCKS_LIST, new HashSet<String>());
-        return stocksSet.contains(stockSymbol);
+    public void removeStockSymbolFromPrefs(String stockSymbol) {
+        ArrayList<String> stocksList = tinyDB.getList(Constants.PREF_STOCKS_LIST);
+        stocksList.remove(stockSymbol);
+        tinyDB.putList(Constants.PREF_STOCKS_LIST, stocksList);
     }
 
+    public boolean stocksSetContains(String stockSymbol) {
+        ArrayList<String> stocksList = tinyDB.getList(Constants.PREF_STOCKS_LIST);
+        return stocksList.contains(stockSymbol);
+    }
+
+    public void saveStockList(ArrayList<String> stocksList) {
+        tinyDB.putList(Constants.PREF_STOCKS_LIST, stocksList);
+    }
+
+    public ArrayList<String> getStockList() {
+        return tinyDB.getList(Constants.PREF_STOCKS_LIST);
+    }
+
+    public boolean contains(String key) {
+        return tinyDB.contains(key);
+    }
 }

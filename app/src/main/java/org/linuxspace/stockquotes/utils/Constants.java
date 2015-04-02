@@ -40,8 +40,20 @@ public class Constants {
     public static final String J_NAME = "Name";
     public static final String J_AUTOCOMLETE_SYMBOL = "symbol";
     public static final String J_AUTOCOMLETE_NAME = "name";
+    public static final String J_CLOSE = "Close";
+    public static final String J_HIGTH = "DaysHigh";
+    public static final String J_LOW = "DaysLow";
+    public static final String J_OPEN = "Open";
+    public static final String J_EPS = "EPSEstimateCurrentYear";
+    public static final String J_YEAR_RANGE = "YearRange";
+    public static final String J_PREV_CLOSE = "PreviousClose";
+
 
     //Strings
     public static final String UNKNOWN = "N/A";
     public static final String TOOLBAR_REMOVEMODE_SPACES = "     ";
+
+    //Other
+    public static final String INTENT_EXTRA_STOCK = "intentStock";
+    public static final String GRAPHIC_DATA_SET = "dataSet";
 }

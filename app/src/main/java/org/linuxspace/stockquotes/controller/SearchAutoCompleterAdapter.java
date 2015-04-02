@@ -132,7 +132,7 @@ public class SearchAutoCompleterAdapter extends BaseAdapter
         }
         viewHolder.tvStockName.setText(searchAutocompleteItem.name);
         viewHolder.getTvStockSymbol.setText(searchAutocompleteItem.symbol);
-        if (PreferencesManager.getInstance().stocksSetContains(context, searchAutocompleteItem.symbol)) {
+        if (PreferencesManager.getInstance().stocksSetContains(searchAutocompleteItem.symbol)) {
             viewHolder.imgFavorite.setImageResource(R.drawable.img_checkmark_orange);
         } else {
             viewHolder.imgFavorite.setImageResource(R.drawable.img_checkmark);
