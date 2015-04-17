@@ -3,27 +3,7 @@ package org.linuxspace.stockquotes.utils;
 /**
  * Created by Alon on 13.03.2015.
  */
-public class Constants {
-
-    //Codes
-    public static final int MICROPHONE_REQUEST_CODE = 121;
-
-
-    //Yahoo urls
-    public static final String BASIC_YAHOO_API_URL = "http://query.yahooapis.com/v1/public/yql?";
-    public static final String YAHOO_DB_URL = "store://datatables.org/alltableswithkeys";
-
-    // time in miliseconds
-    public static final int URL_CONNECTION_TIME_OUT = 15000;
-    public static final int INPUT_STREAM_READ_TIME_OUT = 10000;
-
-    // Files path
-    public static final String FILE_ALL_NASDAQ_QUOTES = "nasdaqQuotes.json";
-    public static final String PREFERENCES_FILE = "config.ini";
-
-    // Shared preferances
-    public static final String PREF_STOCKS_LIST = "stocksList";
-
+public class JsonConstants {
 
     //JSON Constants
     public static final String J_QUERY = "query";
@@ -47,13 +27,10 @@ public class Constants {
     public static final String J_EPS = "EPSEstimateCurrentYear";
     public static final String J_YEAR_RANGE = "YearRange";
     public static final String J_PREV_CLOSE = "PreviousClose";
+    public static final String J_TITLE = "title";
+    public static final String J_LINK = "link";
+    public static final String J_PUB_DATE = "pubDate";
+    public static final String J_VALUE = "value";
+    public static final String J_ITEMS = "items";
 
-
-    //Strings
-    public static final String UNKNOWN = "N/A";
-    public static final String TOOLBAR_REMOVEMODE_SPACES = "     ";
-
-    //Other
-    public static final String INTENT_EXTRA_STOCK = "intentStock";
-    public static final String GRAPHIC_DATA_SET = "dataSet";
 }

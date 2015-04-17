@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="org.linuxspace.stockquotes.view.cotroller.ActivityWebview">
+
+    <include layout="@layout/toolbar" />
+
+    <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+        android:layout_centerInParent="true"
+        android:id="@+id/pbLoadingNews"
+        android:layout_below="@id/llDetailColumns"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="visible"
+        android:background="@color/toolbar_orange" />
+
+    <WebView
+        android:id="@+id/wbNews"
+        android:layout_below="@+id/toolbar_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

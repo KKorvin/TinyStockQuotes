@@ -3,20 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
     tools:ignore="MissingPrefix"
     android:orientation="horizontal">
 
     <RelativeLayout
-        android:layout_marginRight="3dp"
+        android:layout_marginRight="1dp"
         android:background="@color/white"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="78dp">
 
         <ImageView
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="7dp"
             android:id="@+id/imgNewsIcon"
             android:src="@drawable/icon_news"
             android:layout_width="40dp"
@@ -28,18 +29,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:textSize="14sp"
-            android:layout_marginTop="5dp"
+            android:textSize="9sp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="3dp"
             android:textColor="@color/symbol_black"
             fontPath="fonts/Roboto-Regular.ttf"
-            android:text="21.03.2014" />
+            android:text="21.03" />
 
         <TextView
             android:id="@+id/tvNewsTitle"
+            android:layout_toRightOf="@+id/imgNewsIcon"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="7dp"
+            android:paddingRight="7dp"
+            android:maxLines="3"
+            android:ellipsize="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:textSize="@dimen/font_size_stock_symbol"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:textColor="@color/symbol_black"
             fontPath="fonts/Roboto-Regular.ttf"
             android:text="Some news text" />
@@ -56,7 +64,7 @@
             android:id="@+id/imgAddFavorite"
             android:gravity="center_horizontal|center_vertical"
             android:background="@color/white"
-            android:src="@drawable/img_checkmark"
+            android:src="@drawable/icon_arrow_next"
             android:padding="0dp"
             android:layout_width="40dp"
             android:layout_height="40dp" />

@@ -10,7 +10,9 @@ import java.net.URL;
  */
 public class YahooApiUtils {
 
-
+    //Yahoo urls
+    public static final String BASIC_YAHOO_API_URL = "http://query.yahooapis.com/v1/public/yql?";
+    public static final String YAHOO_DB_URL = "store://datatables.org/alltableswithkeys";
 
     /**
      * Creates normal url from YQL query
@@ -18,7 +20,7 @@ public class YahooApiUtils {
      * @return url
      */
     public static String createUrlFromQury(String query) throws MalformedURLException, URISyntaxException {
-        String str = Constants.BASIC_YAHOO_API_URL + "format=json&q=" + query + "&env=" + Constants.YAHOO_DB_URL;
+        String str = BASIC_YAHOO_API_URL + "format=json&q=" + query + "&env=" + YAHOO_DB_URL;
         URL url = new URL(str);
         URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
         return uri.toASCIIString();

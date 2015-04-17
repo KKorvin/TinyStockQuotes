@@ -13,7 +13,7 @@
         android:gravity="center_horizontal|center_vertical"
         android:background="@color/white"
         android:layout_width="78dp"
-        android:textSize="@dimen/font_size_stock_big_letter"
+        android:textSize="45sp"
         android:text="A"
         android:layout_height="78dp" />
 
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:gravity="center"
-            android:textSize="@dimen/font_size_stock_symbol"
+            android:textSize="24sp"
             android:textColor="@color/symbol_black"
             android:text="APPL" />
 
@@ -68,7 +68,7 @@
             android:gravity="left"
             android:maxLines="1"
             android:textColor="@color/company_name_gray"
-            android:textSize="@dimen/font_size_stock_name"
+            android:textSize="15sp"
             android:text="Apple" />
 
         <TextView
@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textSize="@dimen/font_size_stock_price"
+            android:textSize="20sp"
             android:text="115.08" />
 
 
@@ -93,7 +93,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"
             android:layout_below="@+id/tvStockPrice"
-            android:textSize="@dimen/font_size_stock_change"
+            android:textSize="18sp"
             fontPath="fonts/Roboto-Regular.ttf"
             android:text="0.12(0.24%)" />
 

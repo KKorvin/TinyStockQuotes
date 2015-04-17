@@ -21,10 +21,11 @@ public class SlidingMenuItem {
 
     public static ArrayList<SlidingMenuItem> fromDefaultSlidingMenuSet(Context mContext) {
         ArrayList<SlidingMenuItem> allItems = new ArrayList<SlidingMenuItem>();
-        allItems.add(new SlidingMenuItem(mContext.getString(R.string.seetings), R.drawable.icon_slidingmenu_settings));
         allItems.add(new SlidingMenuItem(mContext.getString(R.string.ratee_app), R.drawable.icon_slidingmenu_rate));
         allItems.add(new SlidingMenuItem(mContext.getString(R.string.share), R.drawable.icon_share));
-        allItems.add(new SlidingMenuItem(mContext.getString(R.string.remove_add), R.drawable.icon_remove_ad));
+        allItems.add(new SlidingMenuItem(mContext.getString(R.string.feedback), R.drawable.icon_slidingmenu_feedback));
+        allItems.add(new SlidingMenuItem(mContext.getString(R.string.github), R.drawable.icon_slidingmenu_git));
+        allItems.add(new SlidingMenuItem(mContext.getString(R.string.copyright), R.drawable.icon_slidingmenu_copyright));
 
         return allItems;
     }

@@ -1,7 +1,7 @@
 package org.linuxspace.stockquotes.model;
 
 import org.json.JSONObject;
-import org.linuxspace.stockquotes.utils.Constants;
+import org.linuxspace.stockquotes.utils.JsonConstants;
 
 /**
  * Created by Alon on 14.03.2015.
@@ -16,8 +16,8 @@ public class SearchAutocompleteItem {
 
     public SearchAutocompleteItem(JSONObject jsonObject) {
         try {
-            this.name = jsonObject.getString(Constants.J_AUTOCOMLETE_NAME);
-            this.symbol = jsonObject.getString(Constants.J_AUTOCOMLETE_SYMBOL);
+            this.name = jsonObject.getString(JsonConstants.J_AUTOCOMLETE_NAME);
+            this.symbol = jsonObject.getString(JsonConstants.J_AUTOCOMLETE_SYMBOL);
             this.order = 0;
         } catch (Exception e) {
             e.printStackTrace();

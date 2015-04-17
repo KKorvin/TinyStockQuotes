@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.linuxspace.stockquotes">
+    package="org.linuxspace.stockquotes" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
+        android:name=".ExtendedApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:logo="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name="org.linuxspace.stockquotes.ExtendedApplication"
-        android:theme="@style/AppTheme">
-
+        android:logo="@drawable/ic_launcher"
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".view.cotroller.ActivityMain"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +23,11 @@
         </activity>
         <activity
             android:name=".view.cotroller.ActivityDetails"
-            android:label="@string/stock_details"></activity>
+            android:label="@string/stock_details" />
+        <activity
+            android:name=".view.cotroller.ActivityWebview"
+            android:label="@string/title_activity_activity_webview" >
+        </activity>
     </application>
 
 </manifest>

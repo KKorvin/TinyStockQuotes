@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,11 +20,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
 
@@ -33,9 +37,11 @@ import org.linuxspace.stockquotes.controller.QuotesGetter;
 import org.linuxspace.stockquotes.controller.SearchAutoCompleterAdapter;
 import org.linuxspace.stockquotes.model.FinanceItem;
 import org.linuxspace.stockquotes.model.interfaces.IQuotesGetterCallback;
-import org.linuxspace.stockquotes.utils.Constants;
+import org.linuxspace.stockquotes.utils.DialogsManager;
+import org.linuxspace.stockquotes.utils.GlobalUtils;
 import org.linuxspace.stockquotes.utils.PreferencesManager;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -43,6 +49,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class ActivityMain extends ActionBarActivity implements SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener, AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemLongClickListener {
+
+    private static final int REMOVE_MODE_ANIMATION_DURATION = 250;
+    private static final int MENU_ITEM_ANIMATION_DURATION = 850;
+    private static final int MICROPHONE_REQUEST_CODE = 121;
+    private static final String TOOLBAR_REMOVE_MODE_SPACES = "     ";
+
+    public static final String INTENT_EXTRA_STOCK = "intentStock";
 
     public static enum Mode {
         NORMAL, REMOVE, SEARCH, SORT;
@@ -53,6 +66,9 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
     private Toolbar mActionBarToolbar;
     private SearchView mSearchView;
     private SlidingMenu slidingMenu;
+    private TextView tvNoInternet;
+    private TextView tvToolbarTitle;
+    private ImageButton btnToolbarButton;
 
     private MenuItem editMenuItem;
     private MenuItem microMenuItem;
@@ -82,13 +98,44 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
         srQuotesRefresher.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
         mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         pbLoadingQuotes = (ProgressBarCircularIndeterminate) findViewById(R.id.pbLoadingQuotes);
+        tvNoInternet = (TextView) findViewById(R.id.tvNoInternet);
         setSupportActionBar(mActionBarToolbar);
         this.slidingMenu = new SlidingMenu(this);
-        this.populateMainListview();
         this.searchAutoCompleterAdapter = new SearchAutoCompleterAdapter(this);
+        try {
+            Field f = mActionBarToolbar.getClass().getDeclaredField("mTitleTextView");
+            f.setAccessible(true);
+            tvToolbarTitle = (TextView) f.get(mActionBarToolbar);
+
+            f = mActionBarToolbar.getClass().getDeclaredField("mNavButtonView");
+            f.setAccessible(true);
+            btnToolbarButton = (ImageButton) f.get(mActionBarToolbar);
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        populateMainListview();
+        DialogsManager.showWelcomeDialog(this);
     }
 
     private void populateMainListview() {
+        if (!GlobalUtils.isNetworkConnected(this)) {
+            srQuotesRefresher.setRefreshing(false);
+            pbLoadingQuotes.setVisibility(View.GONE);
+            tvNoInternet.setVisibility(View.VISIBLE);
+            YoYo.with(Techniques.FadeInUp)
+                    .duration(1000)
+                    .playOn(tvNoInternet);
+            return;
+        } else if (tvNoInternet.getVisibility() == View.VISIBLE) {
+            YoYo.with(Techniques.FadeInDown)
+                    .duration(1000)
+                    .playOn(tvNoInternet);
+            tvNoInternet.setVisibility(View.GONE);
+        }
+
         if (lvMainListview == null) {
             lvMainListview = (DynamicListView) findViewById(R.id.lvFinanceItemsList);
             lvMainListview.enableDragAndDrop();
@@ -137,8 +184,8 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
         if (mode == Mode.SORT) {
             financeItemsAdapter.saveOrder();
         }
-        mode = modeToStart;
         if (modeToStart == Mode.NORMAL) {
+            srQuotesRefresher.setEnabled(true);
             removeMenuItem.setVisible(false);
             microMenuItem.setVisible(false);
             sortAbMenuItem.setVisible(false);
@@ -151,14 +198,21 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
             slidingMenu.mDrawerLayout.setEnabled(true);
             slidingMenu.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             slidingMenu.mDrawerToggle.setHomeAsUpIndicator(null);
+            if (mode != modeToStart) {
+                GlobalUtils.safeAnimate(findViewById(searchMenuItem.getItemId()), MENU_ITEM_ANIMATION_DURATION, Techniques.FlipInX);
+                GlobalUtils.safeAnimate(findViewById(editMenuItem.getItemId()), MENU_ITEM_ANIMATION_DURATION, Techniques.FlipInX);
+                GlobalUtils.safeAnimate(tvToolbarTitle, MENU_ITEM_ANIMATION_DURATION, Techniques.FlipInX);
+                GlobalUtils.safeAnimate(btnToolbarButton, MENU_ITEM_ANIMATION_DURATION, Techniques.FlipInX);
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.setStatusBarColor(getResources().getColor(R.color.status_bar_orange));
             }
-            srQuotesRefresher.setEnabled(true);
-            if (financeItemsAdapter != null)
-                financeItemsAdapter.notifyDataSetChanged();
+            if (financeItemsAdapter != null) {
+                lvMainListview.setAdapter(financeItemsAdapter);
+            }
+            mode = modeToStart;
             return;
         } else if (modeToStart == Mode.SORT) {
             removeMenuItem.setVisible(false);
@@ -167,6 +221,8 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
             microMenuItem.setVisible(false);
             sortAbMenuItem.setVisible(true);
             mActionBarToolbar.setTitle(getString(R.string.drag_drop));
+            GlobalUtils.safeAnimate(findViewById(sortAbMenuItem.getItemId()), MENU_ITEM_ANIMATION_DURATION, Techniques.FlipInX);
+            GlobalUtils.safeAnimate(tvToolbarTitle, MENU_ITEM_ANIMATION_DURATION, Techniques.FlipInX);
             mActionBarToolbar.setBackgroundResource(R.color.price_green);
             mActionBarToolbar.setLogo(null);
             slidingMenu.mDrawerToggle.setHomeAsUpIndicator(getV7DrawerToggleDelegate().getThemeUpIndicator());
@@ -186,8 +242,11 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
             editMenuItem.setVisible(false);
             microMenuItem.setVisible(false);
             removeMenuItem.setVisible(true);
+            GlobalUtils.safeAnimate(findViewById(removeMenuItem.getItemId()), MENU_ITEM_ANIMATION_DURATION, Techniques.FlipInX);
             mActionBarToolbar.setLogo(R.drawable.icon_toolbar_checked);
-            mActionBarToolbar.setTitle(Constants.TOOLBAR_REMOVEMODE_SPACES + "0 " + getString(R.string.from) + " " + String.valueOf(financeItemsAdapter.getCount()));
+            mActionBarToolbar.setTitle(TOOLBAR_REMOVE_MODE_SPACES + "0 " + getString(R.string.from) + " " + String.valueOf(financeItemsAdapter.getCount()));
+            GlobalUtils.safeAnimate(tvToolbarTitle, MENU_ITEM_ANIMATION_DURATION, Techniques.FlipInX);
+            GlobalUtils.safeAnimate(btnToolbarButton, MENU_ITEM_ANIMATION_DURATION, Techniques.FlipInX);
             mActionBarToolbar.setBackgroundResource(R.color.price_red);
             financeItemsToRemove.clear();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -201,7 +260,7 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
             editMenuItem.setVisible(false);
             microMenuItem.setVisible(true);
         }
-
+        mode = modeToStart;
         srQuotesRefresher.setEnabled(false);
         slidingMenu.mDrawerToggle.setDrawerIndicatorEnabled(false);
         slidingMenu.mDrawerLayout.setEnabled(false);
@@ -215,7 +274,7 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                     RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.search_hint));
-            startActivityForResult(intent, Constants.MICROPHONE_REQUEST_CODE);
+            startActivityForResult(intent, MICROPHONE_REQUEST_CODE);
         } else if (item.equals(editMenuItem)) {
             startMode(Mode.SORT);
         } else if (item.equals(removeMenuItem)) {
@@ -259,9 +318,6 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        //boolean drawerOpen = slidingMenu.mDrawerLayout.isDrawerOpen(slidingMenu.mDrawerList);
-        //menu.findItem(R.id.action_search).setVisible(!drawerOpen);
-        //menu.findItem(R.id.action_edit).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -310,23 +366,57 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
                 markAsRemove(view, position);
             } else {
                 Intent startIntent = new Intent(this, ActivityDetails.class);
-                startIntent.putExtra(Constants.INTENT_EXTRA_STOCK, financeItemsAdapter.getItem(position));
+                startIntent.putExtra(INTENT_EXTRA_STOCK, financeItemsAdapter.getItem(position));
                 startActivity(startIntent);
             }
         }
     }
 
     private void markAsRemove(View view, int position) {
-        TextView tvStockLetter = (TextView) view.findViewById(R.id.tvStockLetter);
-        LinearLayout llRemoveCheckMark = (LinearLayout) view.findViewById(R.id.llRemoveCheckMark);
-        llRemoveCheckMark.setVisibility(llRemoveCheckMark.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-        tvStockLetter.setVisibility(tvStockLetter.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-        if (llRemoveCheckMark.getVisibility() == View.VISIBLE) {
+        final TextView tvStockLetter = (TextView) view.findViewById(R.id.tvStockLetter);
+        final LinearLayout llRemoveCheckMark = (LinearLayout) view.findViewById(R.id.llRemoveCheckMark);
+        if (llRemoveCheckMark.getVisibility() == View.GONE) {
+            YoYo.with(Techniques.SlideOutLeft)
+                    .duration(REMOVE_MODE_ANIMATION_DURATION)
+                    .playOn(tvStockLetter);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            tvStockLetter.setVisibility(View.GONE);
+                            llRemoveCheckMark.setVisibility(View.VISIBLE);
+                            YoYo.with(Techniques.SlideInLeft)
+                                    .duration(REMOVE_MODE_ANIMATION_DURATION)
+                                    .playOn(llRemoveCheckMark);
+                        }
+                    }, REMOVE_MODE_ANIMATION_DURATION);
+                }
+            });
             financeItemsToRemove.add(position);
         } else {
+            YoYo.with(Techniques.SlideOutLeft)
+                    .duration(REMOVE_MODE_ANIMATION_DURATION)
+                    .playOn(llRemoveCheckMark);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            llRemoveCheckMark.setVisibility(View.GONE);
+                            tvStockLetter.setVisibility(View.VISIBLE);
+                            YoYo.with(Techniques.SlideInLeft)
+                                    .duration(REMOVE_MODE_ANIMATION_DURATION)
+                                    .playOn(tvStockLetter);
+                        }
+                    }, REMOVE_MODE_ANIMATION_DURATION);
+                }
+            });
             financeItemsToRemove.remove(position);
         }
-        mActionBarToolbar.setTitle(Constants.TOOLBAR_REMOVEMODE_SPACES + String.valueOf(financeItemsToRemove.size()) + " " + getString(R.string.from) + " " + String.valueOf(financeItemsAdapter.getCount()));
+        mActionBarToolbar.setTitle(TOOLBAR_REMOVE_MODE_SPACES + String.valueOf(financeItemsToRemove.size()) + " " + getString(R.string.from) + " " + String.valueOf(financeItemsAdapter.getCount()));
     }
 
     @Override
@@ -336,7 +426,7 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.MICROPHONE_REQUEST_CODE) {
+        if (requestCode == MICROPHONE_REQUEST_CODE) {
             ArrayList<String> matches = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
             if (!matches.isEmpty()) {

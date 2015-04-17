@@ -2,8 +2,6 @@
 <resources>
 
     <string name="app_name">Stock Quotes</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
     <string name="edit">Edit</string>
     <string name="microphone">Microphone</string>
     <string name="remove">Remove</string>
@@ -11,7 +9,7 @@
     <string name="search_hint">Company name</string>
     <string name="seetings">Settings</string>
     <string name="share">Share</string>
-    <string name="remove_add">Remove add</string>
+    <string name="donate">Donate</string>
     <string name="ratee_app">Rate app</string>
     <string name="add_price_alert">Add price alert</string>
     <string name="title_activity_activity_details">ActivityDetails</string>
@@ -22,6 +20,7 @@
     <string name="drag_drop">   Drag &amp; Drop</string>
     <string name="sort_ab">Sort alphabetically</string>
     <string name="stock_details">Stock details</string>
+    <string name="stock_news">News</string>
     <string name="week">Week</string>
     <string name="volume">Volume</string>
     <string name="open">Open</string>
@@ -31,5 +30,17 @@
     <string name="eps">EPS</string>
     <string name="exchange">Exchange</string>
     <string name="last_trade">Last trade</string>
+    <string name="title_activity_activity_webview">ActivityWebview</string>
+    <string name="grpah_week">week</string>
+    <string name="grpah_month">month</string>
+    <string name="grpah_year">year</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="open_in_browser">Open in browser</string>
+    <string name="github">GitHub</string>
+    <string name="copyright">Copyright</string>
+    <string name="welcome">Welcome</string>
+    <string name="welcome_message">Material stock quotes is tiny app which allows you follow any NASDAQ stock in simple and comfortable way. It is totally free, open-source and contains no advertising. App is still in beta, so I am open to any feedback.</string>
+    <string name="feedback">Feedback</string>
+    <string name="send_email">Send Email</string>
 
 </resources>

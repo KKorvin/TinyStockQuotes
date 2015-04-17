@@ -9,6 +9,8 @@ import java.util.ArrayList;
  */
 public class PreferencesManager {
 
+    public static final String PREF_STOCKS_LIST = "stocksList";
+
     private static PreferencesManager preferencesManager;
     private TinyDB tinyDB;
 
@@ -25,28 +27,40 @@ public class PreferencesManager {
     }
 
     public void addStockSymbolToPrefs(String stockSymbol) {
-        ArrayList<String> stocksList = tinyDB.getList(Constants.PREF_STOCKS_LIST);
+        ArrayList<String> stocksList = tinyDB.getList(PREF_STOCKS_LIST);
         stocksList.add(stockSymbol);
-        tinyDB.putList(Constants.PREF_STOCKS_LIST, stocksList);
+        tinyDB.putList(PREF_STOCKS_LIST, stocksList);
     }
 
     public void removeStockSymbolFromPrefs(String stockSymbol) {
-        ArrayList<String> stocksList = tinyDB.getList(Constants.PREF_STOCKS_LIST);
+        ArrayList<String> stocksList = tinyDB.getList(PREF_STOCKS_LIST);
         stocksList.remove(stockSymbol);
-        tinyDB.putList(Constants.PREF_STOCKS_LIST, stocksList);
+        tinyDB.putList(PREF_STOCKS_LIST, stocksList);
     }
 
     public boolean stocksSetContains(String stockSymbol) {
-        ArrayList<String> stocksList = tinyDB.getList(Constants.PREF_STOCKS_LIST);
+        ArrayList<String> stocksList = tinyDB.getList(PREF_STOCKS_LIST);
         return stocksList.contains(stockSymbol);
     }
 
     public void saveStockList(ArrayList<String> stocksList) {
-        tinyDB.putList(Constants.PREF_STOCKS_LIST, stocksList);
+        tinyDB.putList(PREF_STOCKS_LIST, stocksList);
+    }
+
+    public void saveBoolean(String key, boolean value) {
+        tinyDB.putBoolean(key, value);
+    }
+
+    public boolean getBoolean(String key) {
+        return tinyDB.getBoolean(key);
+    }
+
+    public boolean hasBoolean(String key) {
+        return tinyDB.contains(key);
     }
 
     public ArrayList<String> getStockList() {
-        return tinyDB.getList(Constants.PREF_STOCKS_LIST);
+        return tinyDB.getList(PREF_STOCKS_LIST);
     }
 
     public boolean contains(String key) {

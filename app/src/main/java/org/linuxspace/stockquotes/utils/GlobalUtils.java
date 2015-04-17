@@ -1,6 +1,12 @@
 package org.linuxspace.stockquotes.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.view.View;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +23,11 @@ import java.net.URL;
  */
 public class GlobalUtils {
 
+    // time in miliseconds
+    public static final int URL_CONNECTION_TIME_OUT = 15000;
+    public static final int INPUT_STREAM_READ_TIME_OUT = 10000;
+
+    private static final String GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=";
 
     /**
      * Gets json response from remote server by url
@@ -25,8 +36,8 @@ public class GlobalUtils {
 
         URL link = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) link.openConnection();
-        connection.setReadTimeout(Constants.INPUT_STREAM_READ_TIME_OUT);
-        connection.setConnectTimeout(Constants.URL_CONNECTION_TIME_OUT);
+        connection.setReadTimeout(INPUT_STREAM_READ_TIME_OUT);
+        connection.setConnectTimeout(URL_CONNECTION_TIME_OUT);
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-length", "0");
         connection.setUseCaches(false);
@@ -83,6 +94,24 @@ public class GlobalUtils {
     }
 
     public static String buildGooglePlayLink(Context mContext) {
-        return "https://play.google.com/store/apps/details?id=" + mContext.getPackageName();
+        return GOOGLE_PLAY_URL + mContext.getPackageName();
+    }
+
+    public static boolean isNetworkConnected(Context mContext) {
+        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null) {
+            // There are no active networks.
+            return false;
+        } else
+            return true;
+    }
+
+    public static void safeAnimate(View view, int duration, Techniques type) {
+        if (view != null) {
+            YoYo.with(type)
+                    .duration(duration)
+                    .playOn(view);
+        }
     }
 }

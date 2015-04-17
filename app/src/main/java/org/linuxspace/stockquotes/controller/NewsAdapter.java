@@ -8,40 +8,40 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.linuxspace.stockquotes.R;
-import org.linuxspace.stockquotes.model.StockDetailsItem;
+import org.linuxspace.stockquotes.model.News;
 
 import java.util.ArrayList;
 
 /**
  * Created by Alon on 13.03.2015.
  */
-public class StockDetailsAdapter extends ArrayAdapter<StockDetailsItem> {
+public class NewsAdapter extends ArrayAdapter<News> {
 
     private static class ViewHolder {
         TextView tvTitle;
-        TextView tvValue;
+        TextView tvDate;
     }
 
-    public StockDetailsAdapter(Context context, ArrayList<StockDetailsItem> stockDetailsItems) {
-        super(context, R.layout.lv_drawer_item, stockDetailsItems);
+    public NewsAdapter(Context context, ArrayList<News> newsItems) {
+        super(context, R.layout.lv_drawer_item, newsItems);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        StockDetailsItem stockDetailsItem = getItem(position);
+        News newsItem = getItem(position);
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.lv_stock_details, parent, false);
-            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvtiltle);
-            viewHolder.tvValue = (TextView) convertView.findViewById(R.id.tvValue);
+            convertView = inflater.inflate(R.layout.lv_news_item, parent, false);
+            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvNewsTitle);
+            viewHolder.tvDate = (TextView) convertView.findViewById(R.id.tvNewsDate);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.tvTitle.setText(stockDetailsItem.title);
-        viewHolder.tvValue.setText(stockDetailsItem.value);
+        viewHolder.tvTitle.setText(newsItem.title);
+        viewHolder.tvDate.setText(newsItem.getFormatedDate());
 
         return convertView;
     }

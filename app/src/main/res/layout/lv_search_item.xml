@@ -24,13 +24,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:gravity="center"
-            android:textSize="@dimen/font_size_stock_symbol"
+            android:textSize="24sp"
             android:textColor="@color/symbol_black"
             fontPath="fonts/Roboto-Regular.ttf"
             android:text="APPL" />
 
         <TextView
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_marginTop="8dp"
             android:id="@+id/tvStockName"
             android:layout_width="wrap_content"
@@ -40,8 +41,9 @@
             fontPath="fonts/Roboto-Regular.ttf"
             android:gravity="left"
             android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/company_name_gray"
-            android:textSize="@dimen/font_size_stock_name"
+            android:textSize="15sp"
             android:text="Apple" />
 
 

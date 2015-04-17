@@ -77,8 +77,8 @@ public class FinanceItemsAdapter extends ArrayAdapter<FinanceItem> implements Sw
             viewHolder.tvStockLetter.setTextColor(financeItem.getPriceColor(context));
             viewHolder.viewPriceIndicator.setBackgroundColor(financeItem.getPriceColor(context));
             if (ActivityMain.mode != ActivityMain.Mode.REMOVE) {
-                viewHolder.llRemoveCheckMark.setVisibility(View.GONE);
                 viewHolder.tvStockLetter.setVisibility(View.VISIBLE);
+                viewHolder.llRemoveCheckMark.setVisibility(View.GONE);
             }
         }
         return convertView;

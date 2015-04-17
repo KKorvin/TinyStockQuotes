@@ -4,7 +4,7 @@
     tools:ignore="MissingPrefix"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="7dp">
 
     <TextView
         fontPath="fonts/Roboto-Regular.ttf"

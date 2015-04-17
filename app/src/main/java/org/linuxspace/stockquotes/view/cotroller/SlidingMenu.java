@@ -15,6 +15,7 @@ import android.widget.ListView;
 import org.linuxspace.stockquotes.R;
 import org.linuxspace.stockquotes.controller.SlidinMenuAdapter;
 import org.linuxspace.stockquotes.model.SlidingMenuItem;
+import org.linuxspace.stockquotes.utils.DialogsManager;
 import org.linuxspace.stockquotes.utils.GlobalUtils;
 
 /**
@@ -22,6 +23,8 @@ import org.linuxspace.stockquotes.utils.GlobalUtils;
  */
 public class SlidingMenu implements ListView.OnItemClickListener {
 
+    private static final String FEEDBACK_EMAIL = "alon.milo@gmail.com";
+    private static final String GITHUB_URL = "https://github.com/KKorvin/MaterialStockQuotes";
     private ActionBarActivity activity;
     public DrawerLayout mDrawerLayout;
     public ListView mDrawerList;
@@ -82,8 +85,18 @@ public class SlidingMenu implements ListView.OnItemClickListener {
             activity.startActivity(Intent.createChooser(sharingIntent, activity.getString(R.string.share)));
         } else if (clickedItem.title.equals(activity.getString(R.string.ratee_app))) {
             activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + activity.getPackageName())));
+        } else if (clickedItem.title.equals(activity.getString(R.string.copyright))) {
+            DialogsManager.showCopyrightDialog(activity);
+        } else if (clickedItem.title.equals(activity.getString(R.string.feedback))) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/html");
+            intent.putExtra(Intent.EXTRA_EMAIL, FEEDBACK_EMAIL);
+            activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.send_email)));
+        } else if (clickedItem.title.equals(activity.getString(R.string.feedback))) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(GITHUB_URL));
+            activity.startActivity(i);
         }
-
     }
 
 
