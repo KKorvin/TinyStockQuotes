@@ -54,6 +54,8 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
     private static final int MENU_ITEM_ANIMATION_DURATION = 850;
     private static final int MICROPHONE_REQUEST_CODE = 121;
     private static final String TOOLBAR_REMOVE_MODE_SPACES = "     ";
+    private static final String TOOLBAR_TEXTVIEW_FIELD_NAME = "mTitleTextView";
+    private static final String TOOLBAR_NAV_BTN_FIELD_NAME = "mNavButtonView";
 
     public static final String INTENT_EXTRA_STOCK = "intentStock";
 
@@ -64,8 +66,8 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
     public static Mode mode;
 
     private Toolbar mActionBarToolbar;
-    private SearchView mSearchView;
     private SlidingMenu slidingMenu;
+    private SearchView mSearchView;
     private TextView tvNoInternet;
     private TextView tvToolbarTitle;
     private ImageButton btnToolbarButton;
@@ -103,11 +105,11 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
         this.slidingMenu = new SlidingMenu(this);
         this.searchAutoCompleterAdapter = new SearchAutoCompleterAdapter(this);
         try {
-            Field f = mActionBarToolbar.getClass().getDeclaredField("mTitleTextView");
+            Field f = mActionBarToolbar.getClass().getDeclaredField(TOOLBAR_TEXTVIEW_FIELD_NAME);
             f.setAccessible(true);
             tvToolbarTitle = (TextView) f.get(mActionBarToolbar);
 
-            f = mActionBarToolbar.getClass().getDeclaredField("mNavButtonView");
+            f = mActionBarToolbar.getClass().getDeclaredField(TOOLBAR_NAV_BTN_FIELD_NAME);
             f.setAccessible(true);
             btnToolbarButton = (ImageButton) f.get(mActionBarToolbar);
 

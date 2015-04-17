@@ -25,7 +25,6 @@ import java.util.HashSet;
  */
 public class FinanceItemsAdapter extends ArrayAdapter<FinanceItem> implements Swappable {
 
-    // View lookup cache
     private static class ViewHolder {
         TextView tvName;
         TextView tvSymbol;
@@ -34,7 +33,6 @@ public class FinanceItemsAdapter extends ArrayAdapter<FinanceItem> implements Sw
         TextView tvStockLetter;
         View viewPriceIndicator;
         LinearLayout llRemoveCheckMark;
-
     }
 
     private Context context;
@@ -52,7 +50,7 @@ public class FinanceItemsAdapter extends ArrayAdapter<FinanceItem> implements Sw
     public View getView(int position, View convertView, ViewGroup parent) {
         FinanceItem financeItem = getItem(position);
         ViewHolder viewHolder;
-        //ActivityMain.mode == ActivityMain.Mode.REMOVE - Bad temporary solution
+        //TODO ActivityMain.mode == ActivityMain.Mode.REMOVE - Bad temporary solution
         if (convertView == null || ActivityMain.mode == ActivityMain.Mode.REMOVE) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
