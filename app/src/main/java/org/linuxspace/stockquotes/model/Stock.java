@@ -28,6 +28,7 @@ public class Stock extends FinanceItem {
      * Create Stock from json object
      */
     public Stock(JSONObject jsonQuote) throws JSONException {
+        this.isRemoveMode = false;
         this.name = jsonQuote.has(JsonConstants.J_NAME) ? jsonQuote.getString(JsonConstants.J_NAME) : "";
         this.symbol = jsonQuote.has(JsonConstants.J_SYMBOL_SMALL) ? jsonQuote.getString(JsonConstants.J_SYMBOL_SMALL) : "";
         if (this.symbol.isEmpty()) {

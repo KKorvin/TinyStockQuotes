@@ -180,9 +180,12 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
     }
 
     private void startMode(Mode modeToStart) {
-        //Save order before exit sort mode
         if (mode == Mode.SORT) {
+            //Save order before exit sort mode
             financeItemsAdapter.saveOrder();
+        } else if (mode == Mode.REMOVE) {
+            //Clear listview cache after exiting form remove mode.
+            lvMainListview.invalidate();
         }
         if (modeToStart == Mode.NORMAL) {
             srQuotesRefresher.setEnabled(true);
@@ -211,6 +214,7 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
             }
             if (financeItemsAdapter != null) {
                 lvMainListview.setAdapter(financeItemsAdapter);
+                financeItemsAdapter.clearRemoveModes();
             }
             mode = modeToStart;
             return;
@@ -249,6 +253,7 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
             GlobalUtils.safeAnimate(btnToolbarButton, MENU_ITEM_ANIMATION_DURATION, Techniques.FlipInX);
             mActionBarToolbar.setBackgroundResource(R.color.price_red);
             financeItemsToRemove.clear();
+            financeItemsAdapter.clearRemoveModes();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -373,6 +378,7 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
     }
 
     private void markAsRemove(View view, int position) {
+        final int itemPosition = position;
         final TextView tvStockLetter = (TextView) view.findViewById(R.id.tvStockLetter);
         final LinearLayout llRemoveCheckMark = (LinearLayout) view.findViewById(R.id.llRemoveCheckMark);
         if (llRemoveCheckMark.getVisibility() == View.GONE) {
@@ -390,6 +396,7 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
                             YoYo.with(Techniques.SlideInLeft)
                                     .duration(REMOVE_MODE_ANIMATION_DURATION)
                                     .playOn(llRemoveCheckMark);
+                            ((FinanceItem) financeItemsAdapter.getItem(itemPosition)).isRemoveMode = true;
                         }
                     }, REMOVE_MODE_ANIMATION_DURATION);
                 }
@@ -410,6 +417,7 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
                             YoYo.with(Techniques.SlideInLeft)
                                     .duration(REMOVE_MODE_ANIMATION_DURATION)
                                     .playOn(tvStockLetter);
+                            ((FinanceItem) financeItemsAdapter.getItem(itemPosition)).isRemoveMode = false;
                         }
                     }, REMOVE_MODE_ANIMATION_DURATION);
                 }

@@ -45,17 +45,18 @@ public class FinanceItemsAdapter extends ArrayAdapter<FinanceItem> implements Sw
         super(context, R.layout.lv_main_item, financeItems);
         this.context = context;
         this.financeItems = financeItems;
+        clearRemoveModes();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         FinanceItem financeItem = getItem(position);
         ViewHolder viewHolder;
-        if (convertView == null) {
+        //ActivityMain.mode == ActivityMain.Mode.REMOVE - Bad temporary solution
+        if (convertView == null || ActivityMain.mode == ActivityMain.Mode.REMOVE) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.lv_main_item, parent, false);
-            //viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvStockName);
             viewHolder.tvSymbol = (TextView) convertView.findViewById(R.id.tvStockSymbol);
             viewHolder.tvPrice = (TextView) convertView.findViewById(R.id.tvStockPrice);
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvStockName);
@@ -76,12 +77,21 @@ public class FinanceItemsAdapter extends ArrayAdapter<FinanceItem> implements Sw
             viewHolder.tvStockLetter.setText(((Stock) financeItem).getBigLetter());
             viewHolder.tvStockLetter.setTextColor(financeItem.getPriceColor(context));
             viewHolder.viewPriceIndicator.setBackgroundColor(financeItem.getPriceColor(context));
-            if (ActivityMain.mode != ActivityMain.Mode.REMOVE) {
+            if (financeItem.isRemoveMode) {
+                viewHolder.tvStockLetter.setVisibility(View.GONE);
+                viewHolder.llRemoveCheckMark.setVisibility(View.VISIBLE);
+            } else {
                 viewHolder.tvStockLetter.setVisibility(View.VISIBLE);
                 viewHolder.llRemoveCheckMark.setVisibility(View.GONE);
             }
         }
         return convertView;
+    }
+
+    public void clearRemoveModes() {
+        for (FinanceItem item : financeItems) {
+            item.isRemoveMode = false;
+        }
     }
 
     @Override

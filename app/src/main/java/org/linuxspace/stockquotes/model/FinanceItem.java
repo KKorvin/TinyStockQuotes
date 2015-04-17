@@ -15,6 +15,7 @@ public abstract class FinanceItem implements Comparable<FinanceItem>,Serializabl
     public String price;
     public String priceChangePercent;
     public String priceChangeNumber;
+    public boolean isRemoveMode;
 
     public String getFormatedPriceChange() {
         return this.priceChangeNumber + " (" + this.priceChangePercent + ")";
