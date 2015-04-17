@@ -186,6 +186,8 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
         } else if (mode == Mode.REMOVE) {
             //Clear listview cache after exiting form remove mode.
             lvMainListview.invalidate();
+            financeItemsAdapter.clearRemoveModes();
+            financeItemsAdapter.notifyDataSetChanged();
         }
         if (modeToStart == Mode.NORMAL) {
             srQuotesRefresher.setEnabled(true);
@@ -214,7 +216,6 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
             }
             if (financeItemsAdapter != null) {
                 lvMainListview.setAdapter(financeItemsAdapter);
-                financeItemsAdapter.clearRemoveModes();
             }
             mode = modeToStart;
             return;
@@ -283,9 +284,9 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
         } else if (item.equals(editMenuItem)) {
             startMode(Mode.SORT);
         } else if (item.equals(removeMenuItem)) {
-            startMode(Mode.NORMAL);
             financeItemsAdapter.removeItems(financeItemsToRemove);
-            financeItemsAdapter.notifyDataSetChanged();
+            financeItemsToRemove.clear();
+            startMode(Mode.NORMAL);
         } else if (item.equals(sortAbMenuItem)) {
             financeItemsAdapter.orderByAlphabet();
             financeItemsAdapter.saveOrder();

@@ -48,7 +48,14 @@ public class Stock extends FinanceItem {
         this.lastTrade = jsonQuote.has(JsonConstants.J_LAST_TRADE_TIME) ? jsonQuote.getString(JsonConstants.J_LAST_TRADE_TIME) : "";
         this.stockExchange = jsonQuote.has(JsonConstants.J_STOCK_EXCHANGE) ? jsonQuote.getString(JsonConstants.J_STOCK_EXCHANGE) : "";
 
+        this.name = this.name.equals("null") || this.name.equals("Null") ? UNKNOWN : this.name;
         this.eps = this.eps.equals("null") || this.eps.equals("Null") ? UNKNOWN : this.eps;
+        this.prevClose = this.prevClose.equals("null") || this.eps.equals("Null") ? UNKNOWN : this.prevClose;
+        this.hight = this.hight.equals("null") || this.hight.equals("Null") ? UNKNOWN : this.hight;
+        this.low = this.low.equals("null") || this.low.equals("Null") ? UNKNOWN : this.low;
+        this.lastTrade = this.lastTrade.equals("null") || this.lastTrade.equals("Null") ? UNKNOWN : this.lastTrade;
+        this.stockExchange = this.stockExchange.equals("null") || this.stockExchange.equals("Null") ? UNKNOWN : this.stockExchange;
+        this.open = this.open.equals("null") || this.open.equals("Null") ? UNKNOWN : this.open;
 
     }
 
