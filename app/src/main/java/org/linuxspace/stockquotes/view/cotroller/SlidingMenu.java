@@ -24,7 +24,7 @@ import org.linuxspace.stockquotes.utils.GlobalUtils;
 public class SlidingMenu implements ListView.OnItemClickListener {
 
     private static final String FEEDBACK_EMAIL = "alon.milo@gmail.com";
-    private static final String GITHUB_URL = "https://github.com/KKorvin/MaterialStockQuotes";
+    private static final String GITHUB_URL = "https://github.com/KKorvin/TinyStockQuotes";
     private ActionBarActivity activity;
     public DrawerLayout mDrawerLayout;
     public ListView mDrawerList;
