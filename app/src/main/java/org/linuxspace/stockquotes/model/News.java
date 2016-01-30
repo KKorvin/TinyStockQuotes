@@ -1,7 +1,5 @@
 package org.linuxspace.stockquotes.model;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.linuxspace.stockquotes.utils.JsonXmlConstants;
@@ -12,6 +10,7 @@ import org.w3c.dom.NodeList;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /**
  * Created by Alon on 02.04.2015.
@@ -46,15 +45,21 @@ public class News {
                 News news = new News();
                 Node item = itemsList.item(i);
                 NodeList properties = item.getChildNodes();
-                for (int j=0;j<properties.getLength();j++){
+                for (int j = 0; j < properties.getLength(); j++) {
                     Node property = properties.item(j);
                     String name = property.getNodeName();
-                    if (name.equalsIgnoreCase(JsonXmlConstants.XML_TITLE)){
+                    if (name.equalsIgnoreCase(JsonXmlConstants.XML_TITLE)) {
                         news.title = property.getFirstChild().getNodeValue();
-                    } else if (name.equalsIgnoreCase(JsonXmlConstants.XML_LINK)){
+                    } else if (name.equalsIgnoreCase(JsonXmlConstants.XML_LINK)) {
                         news.url = property.getFirstChild().getNodeValue();
-                    } else if (name.equalsIgnoreCase(JsonXmlConstants.XML_PUB_DATE)){
-                        news.date =  property.getFirstChild().getNodeValue();
+                        if (news.url.contains("*") && news.url.lastIndexOf("http") > 0) {//contains 2 links -> take second
+                            String[] urls = news.url.split(Pattern.quote("*"));
+                            if (urls.length > 0) {
+                                news.url = urls[1];
+                            }
+                        }
+                    } else if (name.equalsIgnoreCase(JsonXmlConstants.XML_PUB_DATE)) {
+                        news.date = property.getFirstChild().getNodeValue();
                     }
                 }
                 allNews.add(news);

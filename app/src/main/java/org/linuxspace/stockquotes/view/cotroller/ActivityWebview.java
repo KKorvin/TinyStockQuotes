@@ -6,9 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -38,6 +40,8 @@ public class ActivityWebview extends ActionBarActivity {
 
     private void setWebView() {
         wbNews = (WebView) findViewById(R.id.wbNews);
+        WebSettings wbset= wbNews.getSettings();
+        wbset.setJavaScriptEnabled(true);
         wbNews.setWebViewClient(new WebViewClient() {
 
             @Override
