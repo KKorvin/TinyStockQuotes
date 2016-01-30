@@ -232,7 +232,7 @@ public class ActivityMain extends ActionBarActivity implements SearchView.OnQuer
             GlobalUtils.safeAnimate(tvToolbarTitle, MENU_ITEM_ANIMATION_DURATION, Techniques.FlipInX);
             mActionBarToolbar.setBackgroundResource(R.color.price_green);
             mActionBarToolbar.setLogo(null);
-            slidingMenu.mDrawerToggle.setHomeAsUpIndicator(getV7DrawerToggleDelegate().getThemeUpIndicator());
+            slidingMenu.mDrawerToggle.setHomeAsUpIndicator(R.drawable.abc_tab_indicator_material);
             slidingMenu.mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

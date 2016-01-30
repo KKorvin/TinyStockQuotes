@@ -1,8 +1,13 @@
 package org.linuxspace.stockquotes.model;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.linuxspace.stockquotes.utils.JsonConstants;
+import org.linuxspace.stockquotes.utils.JsonXmlConstants;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,9 +27,36 @@ public class News {
             for (int i = 0; i < jsonItems.length(); i++) {
                 News news = new News();
                 JSONObject jsonItem = (JSONObject) jsonItems.get(i);
-                news.title = jsonItem.getString(JsonConstants.J_TITLE);
-                news.date = jsonItem.getString(JsonConstants.J_PUB_DATE);
-                news.url = jsonItem.getString(JsonConstants.J_LINK);
+                news.title = jsonItem.getString(JsonXmlConstants.XML_TITLE);
+                news.date = jsonItem.getString(JsonXmlConstants.XML_PUB_DATE);
+                news.url = jsonItem.getString(JsonXmlConstants.XML_LINK);
+                allNews.add(news);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return allNews;
+    }
+
+    public static ArrayList<News> fromXML(Document xmlDocument) {
+        ArrayList<News> allNews = new ArrayList<News>();
+        try {
+            NodeList itemsList = xmlDocument.getDocumentElement().getElementsByTagName(JsonXmlConstants.XML_ITEM);
+            for (int i = 0; i < itemsList.getLength(); i++) {
+                News news = new News();
+                Node item = itemsList.item(i);
+                NodeList properties = item.getChildNodes();
+                for (int j=0;j<properties.getLength();j++){
+                    Node property = properties.item(j);
+                    String name = property.getNodeName();
+                    if (name.equalsIgnoreCase(JsonXmlConstants.XML_TITLE)){
+                        news.title = property.getFirstChild().getNodeValue();
+                    } else if (name.equalsIgnoreCase(JsonXmlConstants.XML_LINK)){
+                        news.url = property.getFirstChild().getNodeValue();
+                    } else if (name.equalsIgnoreCase(JsonXmlConstants.XML_PUB_DATE)){
+                        news.date =  property.getFirstChild().getNodeValue();
+                    }
+                }
                 allNews.add(news);
             }
         } catch (Exception e) {

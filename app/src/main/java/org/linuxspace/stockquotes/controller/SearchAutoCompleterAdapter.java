@@ -15,7 +15,7 @@ import com.nhaarman.listviewanimations.util.Swappable;
 import org.json.JSONArray;
 import org.linuxspace.stockquotes.R;
 import org.linuxspace.stockquotes.model.SearchAutocompleteItem;
-import org.linuxspace.stockquotes.utils.JsonConstants;
+import org.linuxspace.stockquotes.utils.JsonXmlConstants;
 import org.linuxspace.stockquotes.utils.GlobalUtils;
 import org.linuxspace.stockquotes.utils.PreferencesManager;
 
@@ -82,12 +82,12 @@ public class SearchAutoCompleterAdapter extends BaseAdapter
         try {
             for (int i = 0; i < this.nasdaqQuotes.length(); i++) {
                 SearchAutocompleteItem item = null;
-                if (input.equalsIgnoreCase(nasdaqQuotes.getJSONObject(i).getString(JsonConstants.J_AUTOCOMLETE_SYMBOL)) ||
-                        input.equalsIgnoreCase(nasdaqQuotes.getJSONObject(i).getString(JsonConstants.J_AUTOCOMLETE_NAME))) {
+                if (input.equalsIgnoreCase(nasdaqQuotes.getJSONObject(i).getString(JsonXmlConstants.J_AUTOCOMLETE_SYMBOL)) ||
+                        input.equalsIgnoreCase(nasdaqQuotes.getJSONObject(i).getString(JsonXmlConstants.J_AUTOCOMLETE_NAME))) {
                     item = new SearchAutocompleteItem(nasdaqQuotes.getJSONObject(i));
                     item.order = SearchAutocompleteItem.MAX_ORDER;
-                } else if (GlobalUtils.containsIgnoreCase(nasdaqQuotes.getJSONObject(i).getString(JsonConstants.J_AUTOCOMLETE_SYMBOL), input) ||
-                        GlobalUtils.containsIgnoreCase(nasdaqQuotes.getJSONObject(i).getString(JsonConstants.J_AUTOCOMLETE_NAME), input)) {
+                } else if (GlobalUtils.containsIgnoreCase(nasdaqQuotes.getJSONObject(i).getString(JsonXmlConstants.J_AUTOCOMLETE_SYMBOL), input) ||
+                        GlobalUtils.containsIgnoreCase(nasdaqQuotes.getJSONObject(i).getString(JsonXmlConstants.J_AUTOCOMLETE_NAME), input)) {
                     item = new SearchAutocompleteItem(nasdaqQuotes.getJSONObject(i));
                     item.order = SearchAutocompleteItem.MIN_ORDER;
                 }

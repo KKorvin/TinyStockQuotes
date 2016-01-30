@@ -3,7 +3,7 @@ package org.linuxspace.stockquotes.model;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.linuxspace.stockquotes.utils.JsonConstants;
+import org.linuxspace.stockquotes.utils.JsonXmlConstants;
 
 import java.util.ArrayList;
 
@@ -29,24 +29,24 @@ public class Stock extends FinanceItem {
      */
     public Stock(JSONObject jsonQuote) throws JSONException {
         this.isRemoveMode = false;
-        this.name = jsonQuote.has(JsonConstants.J_NAME) ? jsonQuote.getString(JsonConstants.J_NAME) : "";
-        this.symbol = jsonQuote.has(JsonConstants.J_SYMBOL_SMALL) ? jsonQuote.getString(JsonConstants.J_SYMBOL_SMALL) : "";
+        this.name = jsonQuote.has(JsonXmlConstants.J_NAME) ? jsonQuote.getString(JsonXmlConstants.J_NAME) : "";
+        this.symbol = jsonQuote.has(JsonXmlConstants.J_SYMBOL_SMALL) ? jsonQuote.getString(JsonXmlConstants.J_SYMBOL_SMALL) : "";
         if (this.symbol.isEmpty()) {
-            this.symbol = jsonQuote.has(JsonConstants.J_SYMBOL_BIG) ? jsonQuote.getString(JsonConstants.J_SYMBOL_BIG) : "";
+            this.symbol = jsonQuote.has(JsonXmlConstants.J_SYMBOL_BIG) ? jsonQuote.getString(JsonXmlConstants.J_SYMBOL_BIG) : "";
         }
-        this.price = jsonQuote.has(JsonConstants.J_LAST_TRADE_PRICE) ? jsonQuote.getString(JsonConstants.J_LAST_TRADE_PRICE) : UNKNOWN;
-        this.lastUpdate = jsonQuote.has(JsonConstants.J_LAST_TRADE_TIME) ? jsonQuote.getString(JsonConstants.J_LAST_TRADE_TIME) : "";
-        this.priceChangeNumber = jsonQuote.has(JsonConstants.J_CHANGE_NUMBER) ? jsonQuote.getString(JsonConstants.J_CHANGE_NUMBER) : "";
-        this.priceChangePercent = jsonQuote.has(JsonConstants.J_CHANGE_PERCENT) ? jsonQuote.getString(JsonConstants.J_CHANGE_PERCENT) : "";
-        this.stockExchange = jsonQuote.has(JsonConstants.J_STOCK_EXCHANGE) ? jsonQuote.getString(JsonConstants.J_STOCK_EXCHANGE) : "";
-        this.volume = jsonQuote.has(JsonConstants.J_VOLUME) ? jsonQuote.getString(JsonConstants.J_VOLUME) : "";
-        this.open = jsonQuote.has(JsonConstants.J_OPEN) ? jsonQuote.getString(JsonConstants.J_OPEN) : "";
-        this.prevClose = jsonQuote.has(JsonConstants.J_PREV_CLOSE) ? jsonQuote.getString(JsonConstants.J_PREV_CLOSE) : "";
-        this.hight = jsonQuote.has(JsonConstants.J_HIGTH) ? jsonQuote.getString(JsonConstants.J_HIGTH) : "";
-        this.low = jsonQuote.has(JsonConstants.J_LOW) ? jsonQuote.getString(JsonConstants.J_LOW) : "";
-        this.eps = jsonQuote.has(JsonConstants.J_EPS) ? jsonQuote.getString(JsonConstants.J_EPS) : "";
-        this.lastTrade = jsonQuote.has(JsonConstants.J_LAST_TRADE_TIME) ? jsonQuote.getString(JsonConstants.J_LAST_TRADE_TIME) : "";
-        this.stockExchange = jsonQuote.has(JsonConstants.J_STOCK_EXCHANGE) ? jsonQuote.getString(JsonConstants.J_STOCK_EXCHANGE) : "";
+        this.price = jsonQuote.has(JsonXmlConstants.J_LAST_TRADE_PRICE) ? jsonQuote.getString(JsonXmlConstants.J_LAST_TRADE_PRICE) : UNKNOWN;
+        this.lastUpdate = jsonQuote.has(JsonXmlConstants.J_LAST_TRADE_TIME) ? jsonQuote.getString(JsonXmlConstants.J_LAST_TRADE_TIME) : "";
+        this.priceChangeNumber = jsonQuote.has(JsonXmlConstants.J_CHANGE_NUMBER) ? jsonQuote.getString(JsonXmlConstants.J_CHANGE_NUMBER) : "";
+        this.priceChangePercent = jsonQuote.has(JsonXmlConstants.J_CHANGE_PERCENT) ? jsonQuote.getString(JsonXmlConstants.J_CHANGE_PERCENT) : "";
+        this.stockExchange = jsonQuote.has(JsonXmlConstants.J_STOCK_EXCHANGE) ? jsonQuote.getString(JsonXmlConstants.J_STOCK_EXCHANGE) : "";
+        this.volume = jsonQuote.has(JsonXmlConstants.J_VOLUME) ? jsonQuote.getString(JsonXmlConstants.J_VOLUME) : "";
+        this.open = jsonQuote.has(JsonXmlConstants.J_OPEN) ? jsonQuote.getString(JsonXmlConstants.J_OPEN) : "";
+        this.prevClose = jsonQuote.has(JsonXmlConstants.J_PREV_CLOSE) ? jsonQuote.getString(JsonXmlConstants.J_PREV_CLOSE) : "";
+        this.hight = jsonQuote.has(JsonXmlConstants.J_HIGTH) ? jsonQuote.getString(JsonXmlConstants.J_HIGTH) : "";
+        this.low = jsonQuote.has(JsonXmlConstants.J_LOW) ? jsonQuote.getString(JsonXmlConstants.J_LOW) : "";
+        this.eps = jsonQuote.has(JsonXmlConstants.J_EPS) ? jsonQuote.getString(JsonXmlConstants.J_EPS) : "";
+        this.lastTrade = jsonQuote.has(JsonXmlConstants.J_LAST_TRADE_TIME) ? jsonQuote.getString(JsonXmlConstants.J_LAST_TRADE_TIME) : "";
+        this.stockExchange = jsonQuote.has(JsonXmlConstants.J_STOCK_EXCHANGE) ? jsonQuote.getString(JsonXmlConstants.J_STOCK_EXCHANGE) : "";
 
         this.name = this.name.equals("null") || this.name.equals("Null") ? UNKNOWN : this.name;
         this.eps = this.eps.equals("null") || this.eps.equals("Null") ? UNKNOWN : this.eps;

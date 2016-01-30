@@ -3,7 +3,7 @@ package org.linuxspace.stockquotes.controller;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.linuxspace.stockquotes.model.interfaces.IHistoricalDataGetterCallback;
-import org.linuxspace.stockquotes.utils.JsonConstants;
+import org.linuxspace.stockquotes.utils.JsonXmlConstants;
 import org.linuxspace.stockquotes.utils.YahooApiUtils;
 import org.linuxspace.stockquotes.view.cotroller.ActivityDetails;
 
@@ -34,19 +34,19 @@ public class HistoricalDataGetter extends BasicAsyncTask {
         try {
             String query = buildQuotesGetQuery();
             String url = YahooApiUtils.createUrlFromQury(query);
-            JSONObject jsonQuery = getJsonWithUrl(url).getJSONObject(JsonConstants.J_QUERY);
-            JSONObject jsonResult = jsonQuery.getJSONObject(JsonConstants.J_RESULTS);
-            JSONObject jsonQuote = jsonResult.optJSONObject(JsonConstants.J_QUOTE);
+            JSONObject jsonQuery = getJsonWithUrl(url).getJSONObject(JsonXmlConstants.J_QUERY);
+            JSONObject jsonResult = jsonQuery.getJSONObject(JsonXmlConstants.J_RESULTS);
+            JSONObject jsonQuote = jsonResult.optJSONObject(JsonXmlConstants.J_QUOTE);
             JSONArray jsonQuotes = new JSONArray();
             if (jsonQuote == null) {
-                jsonQuotes = jsonResult.getJSONArray(JsonConstants.J_QUOTE);
+                jsonQuotes = jsonResult.getJSONArray(JsonXmlConstants.J_QUOTE);
             } else {
                 jsonQuotes.put(jsonQuote);
             }
             for (int i = 0; i < jsonQuotes.length(); i++) {
                 JSONObject jsonObject = jsonQuotes.getJSONObject(i);
-                if (jsonObject.has(JsonConstants.J_CLOSE)) {
-                    histroicalData.add((float) jsonObject.getDouble(JsonConstants.J_CLOSE));
+                if (jsonObject.has(JsonXmlConstants.J_CLOSE)) {
+                    histroicalData.add((float) jsonObject.getDouble(JsonXmlConstants.J_CLOSE));
                 }
             }
         } catch (Exception e) {

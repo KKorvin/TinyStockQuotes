@@ -1,10 +1,8 @@
 package org.linuxspace.stockquotes.controller;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.linuxspace.stockquotes.model.News;
 import org.linuxspace.stockquotes.model.interfaces.INewsGetterCallback;
-import org.linuxspace.stockquotes.utils.JsonConstants;
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 
@@ -13,7 +11,8 @@ import java.util.ArrayList;
  */
 public class NewsGetter extends BasicAsyncTask {
 
-    private static final String YAHOO_STOCK_NEWS_PIPE = "http://pipes.yahoo.com/pipes/pipe.run?_id=2FV68p9G3BGVbc7IdLq02Q&_render=json&feedcount=10&feedurl=http://finance.yahoo.com/rss/headline?s=";
+    private static final String YAHOO_STOCK_NEWS_PART1 = "http://feeds.finance.yahoo.com/rss/2.0/headline?s=";
+    private static final String YAHOO_STOCK_NEWS_PART2 = "&region=US&lang=en-US";
     private INewsGetterCallback callback;
     private String stocksSymbol;
     private ArrayList<News> newsItems;
@@ -28,16 +27,8 @@ public class NewsGetter extends BasicAsyncTask {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            String url = buildJsonNewsUrl();
-            JSONObject jsonValue = getJsonWithUrl(url).getJSONObject(JsonConstants.J_VALUE);
-            JSONObject jsonItem = jsonValue.optJSONObject(JsonConstants.J_ITEMS);
-            JSONArray jsonItems = new JSONArray();
-            if (jsonItem == null) {
-                jsonItems = jsonValue.getJSONArray(JsonConstants.J_ITEMS);
-            } else {
-                jsonItems.put(jsonItem);
-            }
-            newsItems.addAll(News.fromJson(jsonItems));
+            Document newsRss = getXmlWithUrl(buildJsonNewsUrl());
+            newsItems.addAll(News.fromXML(newsRss));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,6 +42,6 @@ public class NewsGetter extends BasicAsyncTask {
     }
 
     private String buildJsonNewsUrl() {
-        return YAHOO_STOCK_NEWS_PIPE + stocksSymbol;
+        return YAHOO_STOCK_NEWS_PART1 + stocksSymbol + YAHOO_STOCK_NEWS_PART2;
     }
 }

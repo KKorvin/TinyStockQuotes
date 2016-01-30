@@ -3,7 +3,7 @@ package org.linuxspace.stockquotes.utils;
 /**
  * Created by Alon on 13.03.2015.
  */
-public class JsonConstants {
+public class JsonXmlConstants {
 
     //JSON Constants
     public static final String J_QUERY = "query";
@@ -27,10 +27,12 @@ public class JsonConstants {
     public static final String J_EPS = "EPSEstimateCurrentYear";
     public static final String J_YEAR_RANGE = "YearRange";
     public static final String J_PREV_CLOSE = "PreviousClose";
-    public static final String J_TITLE = "title";
-    public static final String J_LINK = "link";
-    public static final String J_PUB_DATE = "pubDate";
+
     public static final String J_VALUE = "value";
-    public static final String J_ITEMS = "items";
+
+    public static final String XML_ITEM = "item";
+    public static final String XML_TITLE = "title";
+    public static final String XML_LINK = "link";
+    public static final String XML_PUB_DATE = "pubDate";
 
 }

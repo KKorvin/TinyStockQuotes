@@ -28,7 +28,6 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        News newsItem = getItem(position);
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
@@ -40,9 +39,11 @@ public class NewsAdapter extends ArrayAdapter<News> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.tvTitle.setText(newsItem.title);
-        viewHolder.tvDate.setText(newsItem.getFormatedDate());
-
+        if(getCount() > position) {
+            News newsItem = getItem(position);
+            viewHolder.tvTitle.setText(newsItem.title);
+            viewHolder.tvDate.setText(newsItem.getFormatedDate());
+        }
         return convertView;
     }
 }
