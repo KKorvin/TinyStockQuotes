@@ -11,7 +11,7 @@ import java.net.URL;
 public class YahooApiUtils {
 
     //Yahoo urls
-    public static final String BASIC_YAHOO_API_URL = "http://query.yahooapis.com/v1/public/yql?";
+    public static final String BASIC_YAHOO_API_URL = "https://query.yahooapis.com/v1/public/yql?";
     public static final String YAHOO_DB_URL = "store://datatables.org/alltableswithkeys";
 
     /**

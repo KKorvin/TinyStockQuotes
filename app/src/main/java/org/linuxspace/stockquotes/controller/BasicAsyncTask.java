@@ -10,6 +10,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -32,10 +34,19 @@ public abstract class BasicAsyncTask extends AsyncTask<Void, Void, Void> {
 
     protected Document getXmlWithUrl(String url) throws IOException, ParserConfigurationException, SAXException {
         URL link = new URL(url);
+        HttpURLConnection mURLConnection = (HttpURLConnection) link.openConnection();
+        HttpURLConnection.setFollowRedirects(true);
+        mURLConnection.connect();
+        InputStream rssStream = mURLConnection.getInputStream();
+
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(new InputSource(link.openStream()));
+        Document doc = db.parse(new InputSource(rssStream));
         doc.getDocumentElement().normalize();
+
+        mURLConnection.disconnect();
+        rssStream.close();
+
         return doc;
     }
 }

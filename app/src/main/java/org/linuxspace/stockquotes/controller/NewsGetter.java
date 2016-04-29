@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class NewsGetter extends BasicAsyncTask {
 
-    private static final String YAHOO_STOCK_NEWS_PART1 = "http://feeds.finance.yahoo.com/rss/2.0/headline?s=";
+    private static final String YAHOO_STOCK_NEWS_PART1 = "https://feeds.finance.yahoo.com/rss/2.0/headline?s=";
     private static final String YAHOO_STOCK_NEWS_PART2 = "&region=US&lang=en-US";
     private INewsGetterCallback callback;
     private String stocksSymbol;
@@ -27,7 +27,8 @@ public class NewsGetter extends BasicAsyncTask {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            Document newsRss = getXmlWithUrl(buildJsonNewsUrl());
+            String newsLink = buildJsonNewsUrl();
+            Document newsRss = getXmlWithUrl(newsLink);
             newsItems.addAll(News.fromXML(newsRss));
         } catch (Exception e) {
             e.printStackTrace();

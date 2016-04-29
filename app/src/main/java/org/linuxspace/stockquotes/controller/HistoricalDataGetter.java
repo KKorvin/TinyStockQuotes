@@ -10,6 +10,7 @@ import org.linuxspace.stockquotes.view.cotroller.ActivityDetails;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 /**
  * Created by Alon on 15.01.2015.
@@ -49,6 +50,7 @@ public class HistoricalDataGetter extends BasicAsyncTask {
                     histroicalData.add((float) jsonObject.getDouble(JsonXmlConstants.J_CLOSE));
                 }
             }
+            Collections.reverse(histroicalData);
         } catch (Exception e) {
             e.printStackTrace();
         }
